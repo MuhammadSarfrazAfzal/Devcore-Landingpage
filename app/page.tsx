@@ -22,7 +22,7 @@ export default function Home() {
       <FrameToFullscreen
         titleComponent={
           <h1 className="text-4xl md:text-5xl font-semibold text-white mt-[4vh]">
-            Crafting digital experiences that <br />
+            Crafting digital experiences with <br />
             <ScrollFloat
               stagger={0.8}
               textClassName="text-white font-bold tracking-tight inline-block"
@@ -32,7 +32,7 @@ export default function Home() {
               }}
               scrollRange={[0.05, 0.48]}
             >
-              Come Alive
+              DEVCORE
             </ScrollFloat>
           </h1>
         }
@@ -93,24 +93,24 @@ export default function Home() {
       <ScrollMorphSection />
 
       <div id="gallery">
-      <ScrollFoldTransition
-        seamColor="#c8a882"
-        voidColor="#050505"
-        topColor="#0f0f0f"
-        bottomColor="#1a1a1a"
-        scrollDistance="+=180%"
-        label={
-          <div className="flex flex-col items-center gap-4">
-            <span className="text-xs font-bold uppercase tracking-[0.4em] opacity-70">
-              Chapter 03
-            </span>
-            <span className="text-[clamp(2.5rem,9vw,8rem)] font-bold uppercase leading-[0.9] tracking-tight flex flex-col items-center" style={{ whiteSpace: "nowrap" }}>
-              <span>DESIGNED</span>
-              <span>WITH&nbsp;INTENT</span>
-            </span>
-          </div>
-        }
-      />
+        <ScrollFoldTransition
+          seamColor="#c8a882"
+          voidColor="#050505"
+          topColor="#0f0f0f"
+          bottomColor="#1a1a1a"
+          scrollDistance="+=180%"
+          label={
+            <div className="flex flex-col items-center gap-4">
+              <span className="text-xs font-bold uppercase tracking-[0.4em] opacity-70">
+                Chapter 03
+              </span>
+              <span className="text-[clamp(2.5rem,9vw,8rem)] font-bold uppercase leading-[0.9] tracking-tight flex flex-col items-center" style={{ whiteSpace: "nowrap" }}>
+                <span>DESIGNED</span>
+                <span>WITH&nbsp;INTENT</span>
+              </span>
+            </div>
+          }
+        />
       </div>
 
       <ScrollTiltedGridDemo />
