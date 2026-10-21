@@ -21,14 +21,14 @@ export default function Home() {
     <main className="relative">
       <FrameToFullscreen
         titleComponent={
-          <h1 className="text-4xl md:text-5xl font-semibold text-white mt-[4vh]">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-semibold text-white mt-[2vh] md:mt-[4vh] px-2 text-center">
             Crafting digital experiences with <br />
             <ScrollFloat
               stagger={0.8}
               textClassName="text-white font-bold tracking-tight inline-block"
               style={{
-                fontSize: "clamp(4.5rem, 10vw, 9.5rem)",
-                marginTop: "3rem"
+                fontSize: "clamp(2.5rem, 7.5vw, 9.5rem)",
+                marginTop: "1.25rem"
               }}
               scrollRange={[0.05, 0.48]}
             >
@@ -40,27 +40,30 @@ export default function Home() {
         <VSCodePortfolio />
       </FrameToFullscreen>
 
-      <ScrollRevealCurtain
-        curtainColor="#fd5200"
-        scrollDistance="+=120%"
-        label={
-          <div className="flex flex-col items-center gap-4">
-            <span className="text-xs font-bold uppercase tracking-[0.3em] opacity-80">
-              Chapter 01
-            </span>
-            <span className="block text-[clamp(2.5rem,9vw,8rem)] font-bold uppercase leading-[0.9] tracking-tight">
-              About
-              <br />
-              DevCore
-            </span>
-          </div>
-        }
-        beneath={
-          <section className="relative w-screen h-screen bg-[#080808]">
-            <SplineSceneBasic />
-          </section>
-        }
-      />
+      {/* Desktop Only: 3D Spline Scene & Curtain Transition (completely removed on mobile) */}
+      <div className="hidden md:block">
+        <ScrollRevealCurtain
+          curtainColor="#fd5200"
+          scrollDistance="+=120%"
+          label={
+            <div className="flex flex-col items-center gap-4">
+              <span className="text-xs font-bold uppercase tracking-[0.3em] opacity-80">
+                Chapter 01
+              </span>
+              <span className="block text-[clamp(2.5rem,9vw,8rem)] font-bold uppercase leading-[0.9] tracking-tight">
+                About
+                <br />
+                DevCore
+              </span>
+            </div>
+          }
+          beneath={
+            <section className="relative w-full h-screen bg-[#080808] overflow-hidden">
+              <SplineSceneBasic />
+            </section>
+          }
+        />
+      </div>
 
       <div id="about">
         <StoryScrollDemo />

@@ -35,39 +35,41 @@ export const FrameToFullscreen: React.FC<Props> = ({ titleComponent, children })
         const vw = window.innerWidth;
         const vh = window.innerHeight;
 
+        const isMobile = vw < 768;
+
         // Card visual target dimensions (same as original CSS width/height constraints)
-        const targetW = Math.min(vw * 0.82, 1320);
-        const targetH = Math.min(vh * 0.58, 700);
+        const targetW = isMobile ? vw * 0.94 : Math.min(vw * 0.82, 1320);
+        const targetH = isMobile ? vh * 0.72 : Math.min(vh * 0.58, 700);
 
         // Required scale ratios to map 100vw/100vh down to card size
         const startScaleX = targetW / vw;
         const startScaleY = targetH / vh;
 
         // Vertical offset to visually mimic the old pb-[6vh] padding
-        const padBottom = vh * 0.06;
+        const padBottom = vh * (isMobile ? 0.02 : 0.06);
 
         // Pre-configure initial card transforms (scaled down and tilted)
         gsap.set(frameRef.current, {
           transformPerspective: 1600,
           transformOrigin: "50% 100%",
-          rotateX: 26,
-          scaleX: startScaleX * 0.86,
-          scaleY: startScaleY * 0.86,
-          y: 70 - padBottom,
-          borderWidth: 4,
-          padding: 16,
-          borderRadius: 28,
+          rotateX: isMobile ? 12 : 26,
+          scaleX: isMobile ? startScaleX * 0.96 : startScaleX * 0.86,
+          scaleY: isMobile ? startScaleY * 0.96 : startScaleY * 0.86,
+          y: (isMobile ? 24 : 70) - padBottom,
+          borderWidth: isMobile ? 2 : 4,
+          padding: isMobile ? 6 : 16,
+          borderRadius: isMobile ? 16 : 28,
         });
 
         gsap.set(innerRef.current, {
-          borderRadius: 16,
+          borderRadius: isMobile ? 12 : 16,
         });
 
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: sectionRef.current,
             start: "top top",
-            end: "+=240%",
+            end: isMobile ? "+=150%" : "+=240%",
             scrub: 0.6, // Responsive, buttery smooth scrub tracking
             pin: stageRef.current,
             pinSpacing: true,
@@ -79,10 +81,10 @@ export const FrameToFullscreen: React.FC<Props> = ({ titleComponent, children })
         tl.to(
           frameRef.current,
           {
-            rotateX: 15,
-            scaleX: startScaleX * 0.93,
-            scaleY: startScaleY * 0.93,
-            y: 20 - padBottom,
+            rotateX: isMobile ? 6 : 15,
+            scaleX: isMobile ? startScaleX * 0.98 : startScaleX * 0.93,
+            scaleY: isMobile ? startScaleY * 0.98 : startScaleY * 0.93,
+            y: (isMobile ? 8 : 20) - padBottom,
             duration: 0.5,
             ease: "power1.out",
           },
@@ -153,8 +155,7 @@ export const FrameToFullscreen: React.FC<Props> = ({ titleComponent, children })
     <ContainerScrollContext.Provider value={scrollYProgress}>
       <section
         ref={sectionRef}
-        className="relative w-full"
-        style={{ height: "340vh" }}
+        className="relative w-full h-[250vh] md:h-[340vh]"
       >
         <div
           ref={stageRef}

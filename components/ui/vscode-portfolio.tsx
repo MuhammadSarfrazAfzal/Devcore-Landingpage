@@ -674,7 +674,7 @@ export const VSCodePortfolio: React.FC = () => {
 
           {/* Right panel */}
           <aside
-            className="w-[400px] bg-[#0a0a0a] border-l border-[#1a1a1a] shrink-0 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            className="hidden xl:block w-[400px] bg-[#0a0a0a] border-l border-[#1a1a1a] shrink-0 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             style={{ padding: "44px 32px 40px" }}
           >
             <div style={{ display: "flex", flexDirection: "column", gap: "44px" }}>

@@ -88,6 +88,8 @@ const FlowArt: React.FC<FlowArtProps> = ({
 
       const triggers: ScrollTrigger[] = [];
 
+      const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+
       sections.forEach((section, i) => {
         gsap.set(section, { zIndex: i + 1 });
 
@@ -95,25 +97,41 @@ const FlowArt: React.FC<FlowArtProps> = ({
         if (!inner) return;
 
         if (i > 0) {
-          gsap.set(inner, { rotation: 30, transformOrigin: 'bottom left' });
-          const tween = gsap.to(inner, {
-            rotation: 0,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top bottom',
-              end: 'top 25%',
-              scrub: true,
-            },
-          });
-          if (tween.scrollTrigger) triggers.push(tween.scrollTrigger);
+          if (isMobile) {
+            gsap.set(inner, { y: 50, opacity: 0.85 });
+            const tween = gsap.to(inner, {
+              y: 0,
+              opacity: 1,
+              ease: 'power1.out',
+              scrollTrigger: {
+                trigger: section,
+                start: 'top bottom',
+                end: 'top 20%',
+                scrub: 0.3,
+              },
+            });
+            if (tween.scrollTrigger) triggers.push(tween.scrollTrigger);
+          } else {
+            gsap.set(inner, { rotation: 30, transformOrigin: 'bottom left' });
+            const tween = gsap.to(inner, {
+              rotation: 0,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: section,
+                start: 'top bottom',
+                end: 'top 25%',
+                scrub: true,
+              },
+            });
+            if (tween.scrollTrigger) triggers.push(tween.scrollTrigger);
+          }
         }
 
         if (i < sections.length - 1) {
           triggers.push(
             ScrollTrigger.create({
               trigger: section,
-              start: 'bottom bottom',
+              start: isMobile ? 'top top' : 'bottom bottom',
               end: 'bottom top',
               pin: true,
               pinSpacing: false,

@@ -303,7 +303,7 @@ const MacOSMenuBar: React.FC<MacOSMenuBarProps> = ({
             <span className="text-white text-[13px] font-semibold whitespace-nowrap shrink-0">
               {appName}
             </span>
-            <div className="flex items-center" style={{ gap: "1.5rem" }}>
+            <div className="hidden sm:flex items-center" style={{ gap: "1.5rem" }}>
               {menus.map((menu) => (
                 <span
                   key={menu.label}

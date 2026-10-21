@@ -32,95 +32,121 @@ export const ScrollRevealCurtain: React.FC<Props> = ({
   useLayoutEffect(() => {
     if (!sectionRef.current || !curtainRef.current) return;
 
-    const ctx = gsap.context(() => {
-      gsap.set(stageRef.current, { perspective: 1600 });
+    let ctx: gsap.Context | null = null;
 
-      gsap.set(beneathRef.current, {
-        transformOrigin: "50% 50%",
-        scale: 1,
-        rotateX: 0,
-        z: 0,
-      });
+    const init = () => {
+      if (ctx) ctx.revert();
+      if (typeof window !== "undefined" && window.innerWidth < 768) {
+        return;
+      }
 
-      gsap.set(dimRef.current, {
-        opacity: 0,
-      });
+      ctx = gsap.context(() => {
+        gsap.set(stageRef.current, { perspective: 1600 });
 
-      // Vertical wipe instead of a diagonal clip-path sweep — feels far more natural.
-      gsap.set(curtainRef.current, {
-        yPercent: 100,
-        opacity: 1,
-      });
+        gsap.set(beneathRef.current, {
+          transformOrigin: "50% 50%",
+          scale: 1,
+          rotateX: 0,
+          z: 0,
+        });
 
-      gsap.set(shardRef.current, {
-        opacity: 0,
-      });
+        gsap.set(dimRef.current, {
+          opacity: 0,
+        });
 
-      gsap.set(labelRef.current, {
-        opacity: 0,
-        y: 40,
-        scale: 0.96,
-      });
+        // Vertical wipe instead of a diagonal clip-path sweep — feels far more natural.
+        gsap.set(curtainRef.current, {
+          yPercent: 100,
+          opacity: 1,
+        });
 
-      const tl = gsap.timeline({
-        defaults: { ease: "power2.inOut" },
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: scrollDistance,
-          scrub: 0.4,
-          pin: stageRef.current,
-          pinSpacing: true,
-          anticipatePin: 1,
-        },
-      });
+        gsap.set(shardRef.current, {
+          opacity: 0,
+        });
 
-      // Brief beat (0 → 0.05): one moment to register the Spline scene
-      tl.to({}, { duration: 0.05 }, 0);
+        gsap.set(labelRef.current, {
+          opacity: 0,
+          y: 40,
+          scale: 0.96,
+        });
 
-      // Phase 2 (0.05 → 0.8): smooth vertical curtain rise + gentle depth fade
+        const tl = gsap.timeline({
+          defaults: { ease: "power2.inOut" },
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top top",
+            end: scrollDistance,
+            scrub: 0.4,
+            pin: stageRef.current,
+            pinSpacing: true,
+            anticipatePin: 1,
+          },
+        });
+
+      const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+      const holdDuration = isMobile ? 0.35 : 0.08;
+      const curtainDuration = isMobile ? 0.55 : 0.75;
+      const labelDelay = holdDuration + (curtainDuration * 0.6);
+
+      // Hold to register the scene cleanly before curtain sweeps
+      tl.to({}, { duration: holdDuration }, 0);
+
+      // Phase 2: smooth vertical curtain rise + gentle depth fade
       tl.to(
         beneathRef.current,
         {
-          scale: 0.92,
-          duration: 0.75,
+          scale: isMobile ? 0.96 : 0.92,
+          duration: curtainDuration,
           ease: "sine.inOut",
         },
-        0.05
+        holdDuration
       );
 
       tl.to(
         dimRef.current,
         {
           opacity: 0.65,
-          duration: 0.75,
+          duration: curtainDuration,
           ease: "sine.inOut",
         },
-        0.05
+        holdDuration
       );
 
       tl.to(
         curtainRef.current,
         {
           yPercent: 0,
-          duration: 0.75,
+          duration: curtainDuration,
           ease: "power2.inOut",
         },
-        0.05
+        holdDuration
       );
 
       tl.to(
         labelRef.current,
-        { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power2.out" },
-        0.55
+        { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: "power2.out" },
+        labelDelay
       );
 
-      // Small breathing hold at the end so the next section snaps in (0.95 → 1.0)
-      tl.to({}, { duration: 0.05 }, 0.95);
+      // Small breathing hold at the end so the next section snaps in cleanly
+      tl.to({}, { duration: 0.05 }, holdDuration + curtainDuration);
     }, sectionRef);
+  };
 
-    return () => ctx.revert();
-  }, [scrollDistance]);
+  init();
+
+  const handleResize = () => {
+    init();
+    ScrollTrigger.refresh();
+  };
+
+  window.addEventListener("resize", handleResize);
+
+  return () => {
+    window.removeEventListener("resize", handleResize);
+    if (ctx) ctx.revert();
+  };
+}, [scrollDistance]);
 
   return (
     <section
