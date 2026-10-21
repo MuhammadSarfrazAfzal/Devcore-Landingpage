@@ -20,7 +20,7 @@ const projects: Project[] = [
     description:
       "5-layer smart rider safety system with real-time hazard alerts and flood mapping.",
     year: "2025",
-    link: "https://github.com/Rohithpranov07/RIDERSHIELD_AI.git",
+    link: "https://github.com/your-username/RIDERSHIELD_AI",
     image: "/Ridershieldplan-1.png",
   },
   {
@@ -36,7 +36,7 @@ const projects: Project[] = [
     description:
       "Multi-signal developer trust platform delivering a single PST Trust Score.",
     year: "2025",
-    link: "https://github.com/Rohithpranov07/ProofStack.git",
+    link: "https://github.com/your-username/ProofStack",
     image: "/Proofstack-1.png",
   },
   {
@@ -44,7 +44,7 @@ const projects: Project[] = [
     description:
       "AI + blockchain digital forensics platform for detecting and anchoring tamper-proof evidence.",
     year: "2025",
-    link: "https://github.com/Rohithpranov07/cybershield-india.git",
+    link: "https://github.com/your-username/cybershield-india",
     image: "/cybershield-1.png",
   },
 ];

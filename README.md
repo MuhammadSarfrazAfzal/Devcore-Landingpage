@@ -1,6 +1,6 @@
-# Portfolio — Rohith Pranov
+# DevCore — Software Development & Digital Experiences
 
-A cinematic, scroll-driven personal portfolio built on Next.js 16 (App Router), React 19, Tailwind CSS v4, GSAP ScrollTrigger, Framer Motion, Lenis smooth-scroll, Three.js / Spline, and a handful of custom WebGL shaders. Designed to read like an editorial spread on desktop and to keep its rhythm intact on mobile, with every section choreographed against a single scroll timeline.
+A cinematic, scroll-driven digital experience for **DevCore**, built on Next.js 16 (App Router), React 19, Tailwind CSS v4, GSAP ScrollTrigger, Framer Motion, Lenis smooth-scroll, Three.js / Spline, and custom WebGL shaders. Designed to present DevCore as a modern digital engineering company that turns ideas into impactful digital products.
 
 The site is deliberately heavy on motion and light on chrome: there is no navigation bar, no fold; the experience is the scroll. Each "chapter" introduces itself with a full-bleed curtain, plays a dedicated micro-scene, and hands the user off to the next chapter via a custom transition (warp portal, fold, zoom-parallax, tilted grid).
 
@@ -285,7 +285,7 @@ experimental.optimizePackageImports: [
 
 The project is configured to deploy zero-config on Vercel:
 
-1. Connect the GitHub repo (`Rohithpranov07/Portfolio-cinematic`) to a Vercel project.
+1. Connect the GitHub repo to a Vercel project.
 2. Framework preset: **Next.js** (auto-detected).
 3. Install command: `pnpm install` (auto).
 4. Build command: `pnpm build` (auto).
@@ -310,7 +310,7 @@ Static pages prerender at build time; `next/image` requests are served via Verce
 ## Known constraints
 
 - The site is desktop-first by design — many scenes (the VS Code IDE, Spline 3D, the horizontal hero parallax) are authored at a 1440-wide canvas. They render on mobile but the design is not flowed for it.
-- `metadataBase` in `app/layout.tsx` currently points at a placeholder Vercel URL; update before going to a custom domain so Open Graph image URLs resolve correctly.
+- `metadataBase` in `app/layout.tsx` currently points at a placeholder URL; update before going to a custom domain so Open Graph image URLs resolve correctly.
 
 ---
 
@@ -323,4 +323,4 @@ Static pages prerender at build time; `next/image` requests are served via Verce
 - Component primitives — [shadcn/ui](https://ui.shadcn.com/) on [Radix](https://www.radix-ui.com/)
 - Aceternity, motion-primitives, and 21st.dev for several pattern references the scenes were authored against
 
-Built with care by **Rohith Pranov** — [LinkedIn](https://www.linkedin.com/in/rohith-pranov/) · [GitHub](https://github.com/Rohithpranov07) · `rohithpranovv@gmail.com`
+Built with care by **DevCore** — [devcore@devcore.com](mailto:devcore@devcore.com)

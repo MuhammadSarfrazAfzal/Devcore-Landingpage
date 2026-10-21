@@ -286,16 +286,16 @@ const DEFAULT_SHORTCUTS: Shortcut[] = [
 ];
 
 const DEFAULT_RESULTS: SearchResult[] = [
-  { icon: <Code2 />, label: "GitHub", description: "View source repositories", link: "https://github.com/Rohithpranov07" },
-  { icon: <Briefcase />, label: "LinkedIn", description: "Professional profile", link: "https://www.linkedin.com/in/rohith-pranov/" },
-  { icon: <Terminal />, label: "LeetCode", description: "Problem-solving profile", link: "https://leetcode.com/u/Rohithpranov/" },
-  { icon: <Mail />, label: "Email", description: "Get in touch", link: "mailto:rohithpranovv@gmail.com" },
-  { icon: <Globe />, label: "Projects", description: "Browse featured work", link: "#showcase" },
-  { icon: <StickyNote />, label: "About", description: "Background & experience", link: "#about" },
-  { icon: <ImageIcon />, label: "Gallery", description: "Visual portfolio", link: "#gallery" },
-  { icon: <Settings />, label: "Flagship Projects", description: "Selected case studies", link: "#flagship" },
-  { icon: <Terminal />, label: "Resume", description: "Download CV", link: "https://drive.google.com/file/d/1_RlWFg78dGBueOH6he9EF3ptby07ZMML/view?usp=drive_link" },
-  { icon: <MessageSquare />, label: "Contact", description: "Send a message", link: "#contact" },
+  { icon: <Code2 />, label: "GitHub", description: "View DevCore repositories", link: "https://github.com/your-username" },
+  { icon: <Briefcase />, label: "LinkedIn", description: "Company profile", link: "https://www.linkedin.com/company/your-company" },
+  { icon: <Terminal />, label: "Services", description: "Web, Full-Stack & 3D development", link: "#services" },
+  { icon: <Mail />, label: "Email", description: "devcore@devcore.com", link: "mailto:devcore@devcore.com" },
+  { icon: <Globe />, label: "Selected Work", description: "A selection of digital experiences", link: "#projects" },
+  { icon: <StickyNote />, label: "About DevCore", description: "Engineering Ideas Into Reality", link: "#about" },
+  { icon: <ImageIcon />, label: "Design Systems", description: "Visual & motion architecture", link: "#gallery" },
+  { icon: <Settings />, label: "Flagship Solutions", description: "Selected engineering products", link: "#flagship" },
+  { icon: <Activity />, label: "Working Process", description: "Discover · Design · Engineer · Deliver", link: "#process" },
+  { icon: <MessageSquare />, label: "Contact", description: "Have an Idea? Let's Build It.", link: "#contact" },
 ];
 
 interface SpotlightSearchProps {
@@ -338,7 +338,7 @@ export const SpotlightSearch = ({
           <span className="flex items-center text-[#a78bfa]">
             <Search className="!w-3 !h-3" />
           </span>
-          <span className="truncate">Search portfolio…</span>
+          <span className="truncate">Search DevCore…</span>
           <span className="ml-auto flex items-center gap-1 text-[10px] text-[#7a7a7a]">
             <kbd className="px-1 py-px rounded-[3px] bg-[#0d0a14] border border-[#2a2240] font-mono">⌘</kbd>
             <kbd className="px-1 py-px rounded-[3px] bg-[#0d0a14] border border-[#2a2240] font-mono">K</kbd>
@@ -484,7 +484,7 @@ const AppleSpotlight = ({
                       ? shortcuts[hoveredShortcut].label
                       : !searchValue && hoveredSearchResult !== null
                         ? filtered[hoveredSearchResult]?.label ?? "Search"
-                        : "Search portfolio…"
+                        : "Search DevCore…"
                   }
                   placeholderClassName={
                     !searchValue && hoveredSearchResult !== null ? "text-[#c4b5fd]" : "text-[#7a7a7a]"

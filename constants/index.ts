@@ -1,16 +1,18 @@
+export * from "./site-config";
+
 export const SITE = {
-  name: "Rohith Pranov",
-  role: "Creative Developer",
-  tagline: "Crafting digital experiences that move people.",
-  email: "rohithpranovv@gmail.com",
-  location: "India",
+  name: "DevCore",
+  role: "Software Development & Digital Experiences",
+  tagline: "We Build Digital Experiences Beyond Ordinary.",
+  email: "devcore@devcore.com",
+  location: "Global",
 };
 
 export const NAV_LINKS = [
-  { label: "Work", href: "#projects" },
+  { label: "Home", href: "#" },
   { label: "About", href: "#about" },
-  { label: "Skills", href: "#skills" },
-  { label: "Journey", href: "#experience" },
+  { label: "Services", href: "#services" },
+  { label: "Selected Work", href: "#projects" },
   { label: "Contact", href: "#contact" },
 ];
 

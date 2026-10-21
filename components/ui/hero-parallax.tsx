@@ -145,7 +145,7 @@ export const Header = () => {
           marginBottom: "36px",
         }}
       >
-        Building products
+        Selected Work &amp;
         <br />
         <span
           style={{
@@ -158,7 +158,7 @@ export const Header = () => {
             fontWeight: 500,
           }}
         >
-          with intelligence.
+          Digital Solutions.
         </span>
       </h1>
 
@@ -186,11 +186,7 @@ export const Header = () => {
           fontWeight: 400,
         }}
       >
-        Driven by curiosity and a deep obsession with engineering, I build at
-        the intersection of technology, intelligence, and design. Every project
-        here reflects a deliberate process — from architectural decisions to
-        the finest interaction detail — crafted for scalability, real-world
-        impact, and experiences that feel as good as they perform.
+        A selection of digital experiences, engineering experiments, and solutions that demonstrate our approach to design and development.
       </p>
 
       {/* Meta row */}
@@ -198,9 +194,9 @@ export const Header = () => {
         className="flex items-center text-[11px] uppercase text-neutral-500"
         style={{ gap: "18px", marginTop: "40px", letterSpacing: "0.28em" }}
       >
-        <span>2024 — Present</span>
+        <span>DevCore Portfolio</span>
         <span aria-hidden style={{ width: "4px", height: "4px", borderRadius: "9999px", background: "#a78bfa" }} />
-        <span>Engineering · Design · AI</span>
+        <span>Web Engineering · 3D Experiences · Systems</span>
         <span aria-hidden style={{ width: "4px", height: "4px", borderRadius: "9999px", background: "#a78bfa" }} />
         <span>Scroll to explore</span>
       </div>

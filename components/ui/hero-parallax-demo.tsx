@@ -14,26 +14,26 @@ export const products = [
   },
   {
     title: "ProofStack",
-    link: "https://github.com/Rohithpranov07/ProofStack.git",
+    link: "https://github.com/your-username/ProofStack",
     thumbnail: "/Proofstack-1.avif",
     objectPosition: "left top",
   },
   {
     title: "CyberShield India",
-    link: "https://github.com/Rohithpranov07/cybershield-india.git",
+    link: "https://github.com/your-username/cybershield-india",
     thumbnail: "/cybershield-1.avif",
     objectPosition: "left top",
   },
 
   {
-    title: "Old Portfolio",
+    title: "Interactive Experience",
     link: "https://portfolio-wheat-zeta-18.vercel.app",
     thumbnail: "/oldportfolio-1.avif",
     objectPosition: "left top",
   },
   {
     title: "Ridershield",
-    link: "https://github.com/Rohithpranov07/RIDERSHIELD_AI.git",
+    link: "https://github.com/your-username/RIDERSHIELD_AI",
     thumbnail: "/Ridershield-1.avif",
     objectPosition: "center top",
   },
@@ -68,14 +68,14 @@ export const products = [
   },
   {
     title: "Sentinel",
-    link: "https://github.com/Rohithpranov07/Sentinel.git",
+    link: "https://github.com/your-username/Sentinel",
     thumbnail: "/sentinal-1.avif",
     objectPosition: "left top",
   },
 
   {
     title: "Sentry",
-    link: "https://github.com/Rohithpranov07/sentryx.git",
+    link: "https://github.com/your-username/sentryx",
     thumbnail: "/Sentryx-1.avif",
   },
   {

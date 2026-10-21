@@ -71,16 +71,33 @@ export function SplineSceneBasic() {
 
       <div className="flex h-full">
         <div className="flex-1 py-16 relative z-10 flex flex-col justify-center items-end pr-12 pointer-events-none">
-          <div className="max-w-lg w-full">
-          <h1 className="text-5xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400">
-            Built Different.
-          </h1>
-          <p className="mt-6 text-lg text-neutral-300">
-            Welcome. You&apos;re not here by accident.
-I&apos;m Rohith — a developer who thinks in systems,
-designs with intent, and ships things that matter.
-Scroll down. See for yourself.
-          </p>
+          <div className="max-w-xl w-full">
+            <span className="text-xs font-bold uppercase tracking-[0.28em] text-[#bef264] mb-4 block">
+              DEVCORE / DIGITAL ENGINEERING
+            </span>
+            <h1 className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 leading-tight">
+              We Build Digital Experiences Beyond Ordinary.
+            </h1>
+            <p className="mt-5 text-base md:text-lg text-neutral-300 leading-relaxed">
+              DevCore engineers high-performance web applications and immersive digital experiences for ambitious businesses. We combine thoughtful design, reliable engineering, and modern technology to turn ideas into impactful digital products.
+            </p>
+            <p className="mt-4 text-xs md:text-sm text-neutral-400 font-mono tracking-wide">
+              Building things that matter. Scroll down. Discover DevCore.
+            </p>
+            <div className="mt-8 flex items-center gap-4 pointer-events-auto">
+              <a
+                href="#projects"
+                className="px-6 py-2.5 rounded-full bg-white text-black font-semibold text-xs md:text-sm hover:bg-neutral-200 transition-colors cursor-pointer"
+              >
+                Explore Our Work
+              </a>
+              <a
+                href="#contact"
+                className="px-6 py-2.5 rounded-full border border-neutral-700 text-white font-semibold text-xs md:text-sm hover:border-white transition-colors cursor-pointer"
+              >
+                Let&apos;s Talk
+              </a>
+            </div>
           </div>
         </div>
 

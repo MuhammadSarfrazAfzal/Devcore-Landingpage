@@ -24,14 +24,24 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://rohithpranov.vercel.app"),
-  title: "Rohith Pranov — Creative Developer",
+  metadataBase: new URL("https://your-website-domain.com"),
+  title: "DevCore — Software Development & Digital Experiences",
   description:
-    "Portfolio of Rohith Pranov — a creative developer crafting cinematic digital experiences with Three.js, GSAP, and Next.js.",
-  keywords: ["creative developer", "portfolio", "frontend", "Three.js", "GSAP", "Next.js"],
+    "DevCore builds modern web applications, full-stack digital products, and immersive web experiences for ambitious businesses.",
+  keywords: [
+    "DevCore",
+    "software development",
+    "digital experiences",
+    "web development",
+    "full-stack development",
+    "Three.js",
+    "GSAP",
+    "Next.js",
+  ],
   openGraph: {
-    title: "Rohith Pranov — Creative Developer",
-    description: "Crafting digital experiences that move people.",
+    title: "DevCore — Software Development & Digital Experiences",
+    description:
+      "DevCore builds modern web applications, full-stack digital products, and immersive web experiences for ambitious businesses.",
     type: "website",
   },
   robots: { index: true, follow: true },

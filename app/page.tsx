@@ -49,9 +49,9 @@ export default function Home() {
               Chapter 01
             </span>
             <span className="block text-[clamp(2.5rem,9vw,8rem)] font-bold uppercase leading-[0.9] tracking-tight">
-              Who
+              About
               <br />
-              I Am
+              DevCore
             </span>
           </div>
         }
@@ -158,13 +158,24 @@ export default function Home() {
       <ZoomParallaxDemo />
 
       <ScrollReveal className="w-full">
-        <section id="contact" className="min-h-screen w-full flex items-center justify-center bg-black px-6 py-24">
+        <section id="contact" className="min-h-screen w-full flex flex-col items-center justify-center bg-black px-6 py-24 text-center">
+          <div className="max-w-2xl mb-12">
+            <span className="text-xs font-bold uppercase tracking-[0.3em] text-[#a78bfa] mb-3 block">
+              Contact DevCore
+            </span>
+            <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-white mb-6">
+              Have an Idea? Let&apos;s Build It.
+            </h2>
+            <p className="text-neutral-400 text-base md:text-lg leading-relaxed">
+              Have a product idea, a business challenge, or a digital experience in mind? Get in touch with DevCore and let&apos;s discuss how we can bring it to life.
+            </p>
+          </div>
           <ProfileCard
-            name="Rohith Pranov"
-            title="Software Engineer"
-            handle="rohithpranov"
-            status="Online"
-            contactText="Contact Me"
+            name="DevCore"
+            title="Digital Engineering"
+            handle="devcore"
+            status="Available"
+            contactText="Start a Conversation"
             avatarUrl="/profilecard.avif"
             miniAvatarUrl="/profilecard.avif"
             iconUrl="/iconpattern.png"
@@ -174,7 +185,7 @@ export default function Home() {
             enableMobileTilt
             behindGlowEnabled
             innerGradient="linear-gradient(145deg,#60496e8c 0%,#71C4FF44 100%)"
-            contactHref="https://www.linkedin.com/in/rohith-pranov/"
+            contactHref="mailto:devcore@devcore.com"
           />
         </section>
       </ScrollReveal>

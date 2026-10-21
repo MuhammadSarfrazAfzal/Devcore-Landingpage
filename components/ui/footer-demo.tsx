@@ -1,11 +1,8 @@
 "use client";
 import type { SVGProps } from "react";
 import { Footer } from "@/components/ui/modem-animated-footer";
-import {
-  FileText,
-  Mail,
-  NotepadTextDashed,
-} from "lucide-react";
+import { Mail, Terminal } from "lucide-react";
+import { GITHUB_URL, LINKEDIN_URL, EMAIL_MAILTO } from "@/constants/site-config";
 
 const LinkedinIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
@@ -23,43 +20,37 @@ export default function FooterDemo() {
   const socialLinks = [
     {
       icon: <LinkedinIcon className="w-6 h-6" />,
-      href: "https://www.linkedin.com/in/rohith-pranov",
+      href: LINKEDIN_URL,
       label: "LinkedIn",
     },
     {
-      icon: <FileText className="w-6 h-6" />,
-      href: "https://drive.google.com/file/d/1_RlWFg78dGBueOH6he9EF3ptby07ZMML/view?usp=sharing",
-      label: "Resume",
-    },
-    {
       icon: <GithubIcon className="w-6 h-6" />,
-      href: "https://github.com/Rohithpranov07",
+      href: GITHUB_URL,
       label: "Github",
     },
     {
       icon: <Mail className="w-6 h-6" />,
-      href: "mailto:rohithpranovv@gmail.com",
+      href: EMAIL_MAILTO,
       label: "Mail",
     },
   ];
 
   const navLinks = [
-    { label: "LinkedIn", href: "https://linkedin.com" },
-    { label: "Resume", href: "/" },
-    { label: "Github", href: "https://github.com/Rohithpranov07" },
-    { label: "Mail", href: "mailto:rohithpranovv@gmail.com" },
+    { label: "Home", href: "#" },
+    { label: "About", href: "#about" },
+    { label: "Services", href: "#services" },
+    { label: "Selected Work", href: "#projects" },
+    { label: "Contact", href: "#contact" },
   ];
 
   return (
     <Footer
-      brandName="Rohith Pranov"
-      brandDescription="Developer & Engineer crafting intelligent, production-grade systems with purpose."
+      brandName="DevCore"
+      brandDescription="Engineering modern digital experiences through thoughtful design and reliable software development."
       socialLinks={socialLinks}
       navLinks={navLinks}
-      creatorName="Rohith Pranov"
-      creatorUrl="https://github.com/Rohithpranov07"
       brandIcon={
-        <NotepadTextDashed className="w-8 sm:w-10 md:w-14 h-8 sm:h-10 md:h-14 text-background drop-shadow-lg" />
+        <Terminal className="w-8 sm:w-10 md:w-14 h-8 sm:h-10 md:h-14 text-background drop-shadow-lg" />
       }
     />
   );
