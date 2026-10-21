@@ -20,6 +20,15 @@ export const HeroParallax = ({
     objectPosition?: string;
   }[];
 }) => {
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check, { passive: true });
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
   const firstRow = products.slice(0, 4);
   const secondRow = products.slice(4, 8);
   const thirdRow = products.slice(8, 12);
@@ -29,18 +38,22 @@ export const HeroParallax = ({
     offset: ["start start", "end start"],
   });
 
-  const springConfig = { stiffness: 300, damping: 30, bounce: 100 };
+  const springConfig = isMobile
+    ? { stiffness: 90, damping: 20 }
+    : { stiffness: 220, damping: 28 };
+
+  const travelDist = isMobile ? 380 : 1000;
 
   const translateX = useSpring(
-    useTransform(scrollYProgress, [0, 1], [0, 1000]),
+    useTransform(scrollYProgress, [0, 1], [0, travelDist]),
     springConfig
   );
   const translateXReverse = useSpring(
-    useTransform(scrollYProgress, [0, 1], [0, -1000]),
+    useTransform(scrollYProgress, [0, 1], [0, -travelDist]),
     springConfig
   );
   const rotateX = useSpring(
-    useTransform(scrollYProgress, [0, 0.2], [15, 0]),
+    useTransform(scrollYProgress, [0, 0.2], [isMobile ? 8 : 15, 0]),
     springConfig
   );
   const opacity = useSpring(
@@ -48,17 +61,22 @@ export const HeroParallax = ({
     springConfig
   );
   const rotateZ = useSpring(
-    useTransform(scrollYProgress, [0, 0.2], [20, 0]),
+    useTransform(scrollYProgress, [0, 0.2], [isMobile ? 10 : 20, 0]),
     springConfig
   );
   const translateY = useSpring(
-    useTransform(scrollYProgress, [0, 0.2], [-700, 500]),
+    useTransform(scrollYProgress, [0, 0.2], [isMobile ? -350 : -700, isMobile ? 250 : 500]),
     springConfig
   );
+
+  const row1 = isMobile ? firstRow : [...firstRow, ...firstRow];
+  const row2 = isMobile ? secondRow : [...secondRow, ...secondRow];
+  const row3 = isMobile ? thirdRow : [...thirdRow, ...thirdRow];
+
   return (
     <div
       ref={ref}
-      className="h-[300vh] pt-40 pb-0 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
+      className="h-[220vh] md:h-[300vh] pt-20 md:pt-40 pb-0 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
     >
       <Header />
       <motion.div
@@ -72,9 +90,9 @@ export const HeroParallax = ({
       >
         <motion.div
           className="flex flex-row-reverse"
-          style={{ gap: "72px", marginBottom: "88px" }}
+          style={{ gap: isMobile ? "24px" : "72px", marginBottom: isMobile ? "32px" : "88px" }}
         >
-          {[...firstRow, ...firstRow].map((product, i) => (
+          {row1.map((product, i) => (
             <ProductCard
               product={product}
               translate={translateX}
@@ -84,9 +102,9 @@ export const HeroParallax = ({
         </motion.div>
         <motion.div
           className="flex flex-row"
-          style={{ gap: "72px", marginBottom: "88px" }}
+          style={{ gap: isMobile ? "24px" : "72px", marginBottom: isMobile ? "32px" : "88px" }}
         >
-          {[...secondRow, ...secondRow].map((product, i) => (
+          {row2.map((product, i) => (
             <ProductCard
               product={product}
               translate={translateXReverse}
@@ -96,9 +114,9 @@ export const HeroParallax = ({
         </motion.div>
         <motion.div
           className="flex flex-row-reverse"
-          style={{ gap: "72px" }}
+          style={{ gap: isMobile ? "24px" : "72px" }}
         >
-          {[...thirdRow, ...thirdRow].map((product, i) => (
+          {row3.map((product, i) => (
             <ProductCard
               product={product}
               translate={translateX}
@@ -114,8 +132,7 @@ export const HeroParallax = ({
 export const Header = () => {
   return (
     <div
-      className="max-w-7xl relative mx-auto py-20 md:py-40 px-4 w-full left-0 top-0"
-      style={{ paddingTop: "25vh", paddingLeft: "15vh", marginBottom: "20px" }}
+      className="max-w-7xl relative mx-auto pt-16 md:pt-[25vh] px-6 md:pl-[15vh] pb-6 md:pb-8 w-full left-0 top-0 mb-5"
     >
       {/* Eyebrow / kicker */}
       <div
@@ -229,7 +246,7 @@ export const ProductCard = React.memo(({
         y: -20,
       }}
       key={product.title}
-      className="group/product h-80 w-[22rem] relative flex-shrink-0 overflow-hidden rounded-[24px]"
+      className="group/product h-64 sm:h-80 w-[17rem] sm:w-[22rem] relative flex-shrink-0 overflow-hidden rounded-[20px] sm:rounded-[24px]"
     >
       <Link
         href={product.link}

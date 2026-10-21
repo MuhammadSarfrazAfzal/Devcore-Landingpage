@@ -181,7 +181,9 @@ function Tile({
   const sign = side === "L" ? -1 : 1;
   const { aspectRatio, perspective, maxTilt, maxBlur, rounded } = config;
 
-  const blur = useTransform(p, [0, 0.5, 1], [maxBlur, 0, maxBlur], { ease: focusEase });
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+  const effectiveMaxBlur = isMobile ? 0 : maxBlur;
+  const blur = useTransform(p, [0, 0.5, 1], [effectiveMaxBlur, 0, effectiveMaxBlur], { ease: focusEase });
   const bright = useTransform(p, [0, 0.5, 1], [0, 1, 0], { ease: focusEase });
   const contrast = useTransform(p, [0, 0.5, 1], [4, 1, 4], { ease: focusEase });
 
@@ -196,7 +198,9 @@ function Tile({
 
   const innerSY = useTransform(p, [0, 0.5, 1], [1.8, 1, 1.8], { ease: focusEase });
 
-  const filter = useMotionTemplate`blur(${blur}px) brightness(${bright}) contrast(${contrast})`;
+  const filter = isMobile
+    ? useMotionTemplate`brightness(${bright}) contrast(${contrast})`
+    : useMotionTemplate`blur(${blur}px) brightness(${bright}) contrast(${contrast})`;
 
   const topAlign = isContain(src);
   const bgPosition = topAlign ? "center top" : "center";

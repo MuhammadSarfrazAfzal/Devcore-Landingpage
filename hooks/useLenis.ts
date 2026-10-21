@@ -13,12 +13,17 @@ export function getLenis() {
 
 export function useLenis() {
   useEffect(() => {
+    const isTouch =
+      typeof window !== "undefined" &&
+      ("ontouchstart" in window || navigator.maxTouchPoints > 0 || window.innerWidth < 768);
+
     const lenis = new Lenis({
-      lerp: 0.08,
+      lerp: isTouch ? 0.12 : 0.08,
       orientation: "vertical",
       smoothWheel: true,
-      wheelMultiplier: 1.05,
-      touchMultiplier: 1.8,
+      wheelMultiplier: 1.0,
+      touchMultiplier: 1.0,
+      syncTouch: false,
     });
 
     lenisInstance = lenis;

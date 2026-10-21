@@ -126,10 +126,10 @@ const LightRays = ({
       await new Promise((resolve) => setTimeout(resolve, 10));
       if (!containerRef.current) return;
 
-      // Cap DPR at 1.0 (or 0.75x device ratio) for integrated GPUs. The fragment
-      // shader is a soft atmospheric gold backdrop where 0.75-1.0 DPR is visually
-      // identical to 1.5 DPR while cutting millions of fragment operations per frame.
-      const dprCap = Math.max(0.75, Math.min(window.devicePixelRatio * 0.75, 1.0));
+      const isMobile = window.innerWidth < 768;
+      const dprCap = isMobile
+        ? 0.5
+        : Math.max(0.75, Math.min(window.devicePixelRatio * 0.75, 1.0));
       const renderer = new Renderer({
         dpr: dprCap,
         alpha: true,

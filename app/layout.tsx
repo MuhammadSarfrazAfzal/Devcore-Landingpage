@@ -3,7 +3,7 @@ import { Cormorant_Garamond, DM_Sans } from "next/font/google";
 import "./globals.css";
 import { SmoothScrollProvider } from "@/components/animations/SmoothScrollProvider";
 import { MouseFollower } from "@/components/animations/MouseFollower";
-import { PageReveal } from "@/components/animations/PageTransition";
+import DevCoreLoader from "@/components/animations/DevCoreLoader";
 import { AssetPreloader } from "@/components/animations/AssetPreloader";
 import { PerformanceProvider } from "@/hooks/usePerformanceMode";
 import { PerformanceToggle } from "@/components/ui/PerformanceToggle";
@@ -79,7 +79,7 @@ export default function RootLayout({
       >
         <PerformanceProvider>
           <div className="noise-overlay" aria-hidden="true" />
-          <PageReveal />
+          <DevCoreLoader />
           <AssetPreloader />
           <SmoothScrollProvider>
             <MouseFollower />

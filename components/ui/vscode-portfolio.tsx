@@ -412,7 +412,7 @@ export const VSCodePortfolio: React.FC = () => {
       {/* ===== Body ===== */}
       <div className="flex flex-1 min-h-0">
         {/* Activity bar */}
-        <div className="w-[44px] bg-[#0a0a0a] border-r border-[#1a1a1a] flex flex-col items-center py-2 shrink-0 text-[#6f6f6f]">
+        <div className="hidden md:flex w-[44px] bg-[#0a0a0a] border-r border-[#1a1a1a] flex-col items-center py-2 shrink-0 text-[#6f6f6f]">
           <div className="relative w-full flex justify-center py-2 text-white">
             <span className="absolute left-0 top-0 h-full w-[2px] bg-white"></span>
             <I.files className="w-5 h-5" />
@@ -437,7 +437,7 @@ export const VSCodePortfolio: React.FC = () => {
         </div>
 
         {/* Explorer */}
-        <div className="w-[210px] bg-[#0a0a0a] border-r border-[#1a1a1a] shrink-0 flex flex-col">
+        <div className="hidden lg:flex w-[210px] bg-[#0a0a0a] border-r border-[#1a1a1a] shrink-0 flex-col">
           <div className="flex items-center justify-between px-3 pt-3 pb-2">
             <span className="text-[11px] tracking-[0.12em] text-[#9a9a9a]">EXPLORER</span>
             <span className="text-[#6f6f6f]">⋯</span>
@@ -476,9 +476,9 @@ export const VSCodePortfolio: React.FC = () => {
             </div>
 
             {/* Editor body */}
-            <div className="flex-1 overflow-auto px-20 pt-20 pb-16 min-w-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-              <p className="text-[22px] text-[#cfcfcf]" style={{ marginTop: "12px", marginLeft: "24px", marginBottom: "4px" }}>Hi, we&apos;re</p>
-              <h1 className="text-[104px] leading-[1.05] font-bold tracking-tight" style={{ marginBottom: "16px", marginLeft: "24px" }}>
+            <div className="flex-1 overflow-auto px-4 sm:px-8 md:px-20 pt-6 md:pt-20 pb-16 min-w-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <p className="text-base sm:text-[22px] text-[#cfcfcf] ml-2 sm:ml-6 mt-3 mb-1">Hi, we&apos;re</p>
+              <h1 className="text-[clamp(2.8rem,7.5vw,104px)] leading-[1.05] font-bold tracking-tight ml-2 sm:ml-6 mb-4">
                 <TextType
                   as="span"
                   text="DEVCORE"
@@ -512,23 +512,22 @@ export const VSCodePortfolio: React.FC = () => {
                   }
                 />
               </h1>
-              <div className="flex items-center text-[15px] text-[#cfcfcf]" style={{ marginBottom: "0px", marginLeft: "24px" }}>
-                <svg viewBox="0 0 16 16" className="w-4 h-4 mr-1.5 text-[#a78bfa]" fill="currentColor"><path d="M4 1h6l3 3v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1Z" /></svg>
+              <div className="flex flex-wrap items-center text-xs sm:text-[15px] text-[#cfcfcf] ml-2 sm:ml-6 mb-2">
+                <svg viewBox="0 0 16 16" className="w-4 h-4 mr-1.5 text-[#a78bfa] shrink-0" fill="currentColor"><path d="M4 1h6l3 3v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1Z" /></svg>
                 <span className="text-[#a78bfa]">DEVCORE / DIGITAL ENGINEERING</span>
                 <span className="text-[#6f6f6f] mx-2">•</span>
                 <span>Software Development & Digital Experiences</span>
               </div>
-              <p className="text-[15px] text-[#9a9a9a] max-w-[640px]" style={{ marginBottom: "40px", marginLeft: "24px" }}>
+              <p className="text-xs sm:text-[15px] text-[#9a9a9a] max-w-[640px] ml-2 sm:ml-6 mb-8 sm:mb-10 leading-relaxed">
                 DevCore engineers high-performance web applications and immersive digital experiences for ambitious businesses. We combine thoughtful design, reliable engineering, and modern technology to turn ideas into impactful digital products.
               </p>
 
               {/* Code block — Safari-framed */}
               <Safari_01
                 url="devcore.com/company.ts"
-                className="mb-12 max-w-[820px]"
-                style={{ marginLeft: "24px", marginRight: "24px", marginBottom: "24px" }}
+                className="mb-8 sm:mb-12 max-w-[820px] mx-2 sm:mx-6"
               >
-                <pre className="px-10 py-9 leading-[2.1] tracking-[0.01em] overflow-hidden font-mono text-[13.5px]">
+                <pre className="px-5 sm:px-10 py-6 sm:py-9 leading-[2] sm:leading-[2.1] tracking-[0.01em] overflow-x-auto font-mono text-[11px] sm:text-[13.5px]">
                   {[
                     "const company = {",
                     '  name: "DevCore",',
@@ -548,8 +547,7 @@ export const VSCodePortfolio: React.FC = () => {
 
               {/* Buttons */}
               <div
-                className="flex items-center justify-center"
-                style={{ gap: "28px", marginBottom: "96px", marginTop: "8px" }}
+                className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-7 mb-16 sm:mb-24 mt-2"
               >
                 <ButtonCta
                   className="min-w-[200px]"

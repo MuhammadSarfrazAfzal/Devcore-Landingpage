@@ -40,10 +40,10 @@ export const FlowSection: React.FC<FlowSectionProps> = ({
       )}
       style={{
         transformOrigin: 'bottom left',
-        paddingLeft: 'clamp(2.5rem, 12vw, 12rem)',
-        paddingRight: 'clamp(2.5rem, 12vw, 12rem)',
-        paddingTop: 'clamp(3.5rem, 10vw, 8rem)',
-        paddingBottom: 'clamp(3.5rem, 8vw, 7rem)',
+        paddingLeft: 'clamp(1.25rem, 8vw, 12rem)',
+        paddingRight: 'clamp(1.25rem, 8vw, 12rem)',
+        paddingTop: 'clamp(2.5rem, 8vw, 8rem)',
+        paddingBottom: 'clamp(2.5rem, 6vw, 7rem)',
         rowGap: 'clamp(1.5rem, 3vw, 3rem)',
         ...style,
       }}
