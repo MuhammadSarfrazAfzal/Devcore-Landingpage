@@ -126,11 +126,12 @@ const LightRays = ({
       await new Promise((resolve) => setTimeout(resolve, 10));
       if (!containerRef.current) return;
 
-      // Cap DPR at 1.5 — on retina screens (DPR 2-3) the fragment shader runs
-      // at 4-9x the pixel count for a backdrop the eye reads as a soft gold
-      // wash. 1.5 keeps the gradient indistinguishable and halves shader cost.
+      // Cap DPR at 1.0 (or 0.75x device ratio) for integrated GPUs. The fragment
+      // shader is a soft atmospheric gold backdrop where 0.75-1.0 DPR is visually
+      // identical to 1.5 DPR while cutting millions of fragment operations per frame.
+      const dprCap = Math.max(0.75, Math.min(window.devicePixelRatio * 0.75, 1.0));
       const renderer = new Renderer({
-        dpr: Math.min(window.devicePixelRatio, 1.5),
+        dpr: dprCap,
         alpha: true,
       });
       rendererRef.current = renderer;
@@ -279,7 +280,7 @@ void main() {
 
       const updatePlacement = () => {
         if (!containerRef.current || !renderer) return;
-        renderer.dpr = Math.min(window.devicePixelRatio, 1.5);
+        renderer.dpr = Math.max(0.75, Math.min(window.devicePixelRatio * 0.75, 1.0));
         const { clientWidth: wCSS, clientHeight: hCSS } = containerRef.current;
         renderer.setSize(wCSS, hCSS);
         const dpr = renderer.dpr;

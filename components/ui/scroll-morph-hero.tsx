@@ -19,7 +19,7 @@ interface FlipCardProps {
 const IMG_WIDTH = 60;
 const IMG_HEIGHT = 85;
 
-function FlipCard({
+const FlipCard = React.memo(function FlipCard({
     src,
     objectPosition,
     link,
@@ -46,6 +46,7 @@ function FlipCard({
                 height: IMG_HEIGHT,
                 transformStyle: "preserve-3d",
                 perspective: "1000px",
+                willChange: "transform",
             }}
             className="cursor-pointer group"
             onClick={() => {
@@ -66,12 +67,6 @@ function FlipCard({
                         src={src}
                         alt={`hero-${index}`}
                         fill
-                        // Card box is 60 px, but during the bottom-strip arc
-                        // Framer Motion scales it up to 1.8× (1.4× on mobile),
-                        // so the on-screen footprint reaches ~108 px CSS / 216 px
-                        // physical on a retina display. Asking the optimizer for
-                        // a 256-wide source covers DPR 3 at peak scale without
-                        // wasting bytes on the tiny scatter phase.
                         sizes="256px"
                         quality={85}
                         loading="lazy"
@@ -92,7 +87,7 @@ function FlipCard({
             </motion.div>
         </motion.div>
     );
-}
+});
 
 const TOTAL_IMAGES = 20;
 const MAX_SCROLL = 3000;
@@ -243,6 +238,7 @@ export default function IntroAnimation({ scrollProgress }: IntroAnimationProps =
         }));
     }, []);
 
+    const [isInView, setIsInView] = useState(false);
     const [morphValue, setMorphValue] = useState(0);
     const [rotateValue, setRotateValue] = useState(0);
     const [parallaxValue, setParallaxValue] = useState(0);
@@ -250,6 +246,19 @@ export default function IntroAnimation({ scrollProgress }: IntroAnimationProps =
     const morphValueRef = useRef(0);
     const autoRotateRef = useRef(0);
     const isPausedRef = useRef(false);
+
+    useEffect(() => {
+        const container = containerRef.current;
+        if (!container) return;
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                setIsInView(entry.isIntersecting);
+            },
+            { rootMargin: "300px 0px" }
+        );
+        observer.observe(container);
+        return () => observer.disconnect();
+    }, []);
 
     useEffect(() => {
         morphValueRef.current = morphValue;
@@ -269,6 +278,7 @@ export default function IntroAnimation({ scrollProgress }: IntroAnimationProps =
     }, []);
 
     useEffect(() => {
+        if (!isInView) return;
         let rafId: number;
         let lastTime = performance.now();
         const tick = (time: number) => {
@@ -282,9 +292,10 @@ export default function IntroAnimation({ scrollProgress }: IntroAnimationProps =
         };
         rafId = requestAnimationFrame(tick);
         return () => cancelAnimationFrame(rafId);
-    }, []);
+    }, [isInView]);
 
     useEffect(() => {
+        if (!isInView) return;
         const unsubscribeMorph = smoothMorph.on("change", setMorphValue);
         const unsubscribeRotate = smoothScrollRotate.on("change", setRotateValue);
         const unsubscribeParallax = smoothMouseX.on("change", setParallaxValue);
@@ -293,7 +304,7 @@ export default function IntroAnimation({ scrollProgress }: IntroAnimationProps =
             unsubscribeRotate();
             unsubscribeParallax();
         };
-    }, [smoothMorph, smoothScrollRotate, smoothMouseX]);
+    }, [isInView, smoothMorph, smoothScrollRotate, smoothMouseX]);
 
     const contentOpacity = useTransform(smoothMorph, [0.8, 1], [0, 1]);
     const contentY = useTransform(smoothMorph, [0.8, 1], [20, 0]);

@@ -68,7 +68,7 @@ export const FrameToFullscreen: React.FC<Props> = ({ titleComponent, children })
             trigger: sectionRef.current,
             start: "top top",
             end: "+=240%",
-            scrub: 1.2, // Silk smooth scrub damping
+            scrub: 0.6, // Responsive, buttery smooth scrub tracking
             pin: stageRef.current,
             pinSpacing: true,
             anticipatePin: 1,

@@ -99,7 +99,7 @@ export function MouseFollower() {
     <>
       <motion.div
         className="fixed top-0 left-0 z-[9999] pointer-events-none mix-blend-difference"
-        style={{ x, y, translateX: "-50%", translateY: "-50%" }}
+        style={{ x, y, translateX: "-50%", translateY: "-50%", willChange: "transform" }}
       >
         <motion.div
           className="rounded-full bg-white"
@@ -113,7 +113,7 @@ export function MouseFollower() {
       </motion.div>
       <motion.div
         className="fixed top-0 left-0 z-[9999] pointer-events-none"
-        style={{ x: dotX, y: dotY, translateX: "-50%", translateY: "-50%" }}
+        style={{ x: dotX, y: dotY, translateX: "-50%", translateY: "-50%", willChange: "transform" }}
       >
         <motion.div
           className="w-1.5 h-1.5 rounded-full bg-white"

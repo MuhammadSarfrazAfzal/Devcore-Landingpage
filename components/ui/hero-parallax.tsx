@@ -208,7 +208,7 @@ export const Header = () => {
   );
 };
 
-export const ProductCard = ({
+export const ProductCard = React.memo(({
   product,
   translate,
 }: {
@@ -224,6 +224,8 @@ export const ProductCard = ({
     <motion.div
       style={{
         x: translate,
+        willChange: "transform",
+        transform: "translateZ(0)",
         boxShadow:
           "0 30px 80px -30px rgba(0,0,0,0.7), 0 0 0 1px rgba(167,139,250,0.10), inset 0 1px 0 rgba(255,255,255,0.06)",
       }}
@@ -273,4 +275,4 @@ export const ProductCard = ({
       </h2>
     </motion.div>
   );
-};
+});

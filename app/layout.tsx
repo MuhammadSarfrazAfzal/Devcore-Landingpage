@@ -5,6 +5,8 @@ import { SmoothScrollProvider } from "@/components/animations/SmoothScrollProvid
 import { MouseFollower } from "@/components/animations/MouseFollower";
 import { PageReveal } from "@/components/animations/PageTransition";
 import { AssetPreloader } from "@/components/animations/AssetPreloader";
+import { PerformanceProvider } from "@/hooks/usePerformanceMode";
+import { PerformanceToggle } from "@/components/ui/PerformanceToggle";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-display",
@@ -65,13 +67,16 @@ export default function RootLayout({
         className="bg-[#080808] text-[#f0ece4] antialiased overflow-x-hidden"
         suppressHydrationWarning
       >
-        <div className="noise-overlay" aria-hidden="true" />
-        <PageReveal />
-        <AssetPreloader />
-        <SmoothScrollProvider>
-          <MouseFollower />
-          {children}
-        </SmoothScrollProvider>
+        <PerformanceProvider>
+          <div className="noise-overlay" aria-hidden="true" />
+          <PageReveal />
+          <AssetPreloader />
+          <SmoothScrollProvider>
+            <MouseFollower />
+            {children}
+          </SmoothScrollProvider>
+          <PerformanceToggle />
+        </PerformanceProvider>
       </body>
     </html>
   );

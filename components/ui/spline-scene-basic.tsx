@@ -9,6 +9,7 @@ export function SplineSceneBasic() {
   const cardRef = useRef<HTMLDivElement>(null);
   const [spotlightArmed, setSpotlightArmed] = useState(false);
   const [loadScene, setLoadScene] = useState(false);
+  const [isSceneInView, setIsSceneInView] = useState(false);
 
   useEffect(() => {
     // 1. Warm up the 3D runtime eagerly in the background on first scroll or touch
@@ -27,7 +28,7 @@ export function SplineSceneBasic() {
 
     if (typeof window !== "undefined") {
       if (window.scrollY > 10) {
-        setLoadScene(true);
+        requestAnimationFrame(() => setLoadScene(true));
       } else {
         window.addEventListener("scroll", startWarmUp, { passive: true });
         window.addEventListener("pointerdown", startWarmUp, { passive: true });
@@ -35,21 +36,20 @@ export function SplineSceneBasic() {
       }
     }
 
-    // 2. IntersectionObserver for Spotlight + fallback scene loading
+    // 2. IntersectionObserver for Spotlight + active scene rendering
     if (!cardRef.current) return;
     const el = cardRef.current;
     const io = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
+          setIsSceneInView(entry.isIntersecting);
           if (entry.isIntersecting && entry.intersectionRatio >= 0.15) {
             setSpotlightArmed(true);
             setLoadScene(true);
-            io.disconnect();
-            break;
           }
         }
       },
-      { threshold: [0, 0.15, 0.3, 0.5] }
+      { threshold: [0, 0.15, 0.3, 0.5], rootMargin: "150px 0px" }
     );
     io.observe(el);
 
@@ -61,7 +61,7 @@ export function SplineSceneBasic() {
 
   return (
     <Card ref={cardRef} className="w-full h-full rounded-none border-0 bg-black/[0.96] relative overflow-hidden">
-      {spotlightArmed && (
+      {spotlightArmed && isSceneInView && (
         <Spotlight
           key="spotlight-armed"
           className="-top-40 left-0 md:left-60 md:-top-20"
@@ -76,15 +76,21 @@ export function SplineSceneBasic() {
             Built Different.
           </h1>
           <p className="mt-6 text-lg text-neutral-300">
-            Welcome. You're not here by accident.
-I'm Rohith — a developer who thinks in systems,
+            Welcome. You&apos;re not here by accident.
+I&apos;m Rohith — a developer who thinks in systems,
 designs with intent, and ships things that matter.
 Scroll down. See for yourself.
           </p>
           </div>
         </div>
 
-        <div className="flex-1 relative pointer-events-auto">
+        <div
+          className="flex-1 relative pointer-events-auto"
+          style={{
+            visibility: isSceneInView ? "visible" : "hidden",
+            pointerEvents: isSceneInView ? "auto" : "none",
+          }}
+        >
           {loadScene && (
             <SplineScene
               scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"

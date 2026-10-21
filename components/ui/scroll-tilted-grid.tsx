@@ -268,12 +268,12 @@ export type ScrollTiltedGridProps = {
 export function ScrollTiltedGrid({
   images = DEFAULT_GRID_IMAGES,
   loop = false,
-  initialCycles = 3,
+  initialCycles = 1,
   aspectRatio = "3/4",
   gap = 10,
   perspective = 900,
   maxTilt = 70,
-  maxBlur = 8,
+  maxBlur = 3,
   rounded = "0.375rem",
   className,
 }: ScrollTiltedGridProps = {}) {
