@@ -10,6 +10,7 @@ import LogoLoop from "@/components/ui/logo-loop";
 import ScrollStack, { ScrollStackItem } from "@/components/ui/scroll-stack";
 import TextType from "@/components/ui/text-type";
 import { ProjectModal, type Project } from "@/components/ui/project-modal";
+import VSCode3DPreview from "@/components/ui/vscode-3d-preview";
 
 /* ---------- Tiny icon set (inline SVG) ---------- */
 const I = {
@@ -376,6 +377,7 @@ const featuredProjects: Project[] = [
 
 export const VSCodePortfolio: React.FC = () => {
   const [activeProject, setActiveProject] = React.useState<Project | null>(null);
+  const [previewMode, setPreviewMode] = React.useState<"split" | "3d" | "code">("split");
   return (
     <div className="w-full h-full bg-[#0a0a0a] text-[#cccccc] flex flex-col overflow-hidden rounded-[6px]"
       style={{ fontFamily: "'SF Pro Text', -apple-system, system-ui, sans-serif", fontSize: 12 }}>
@@ -522,28 +524,109 @@ export const VSCodePortfolio: React.FC = () => {
                 DevCore engineers high-performance web applications and immersive digital experiences for ambitious businesses. We combine thoughtful design, reliable engineering, and modern technology to turn ideas into impactful digital products.
               </p>
 
-              {/* Code block — Safari-framed */}
-              <Safari_01
-                url="devcore.com/company.ts"
-                className="mb-8 sm:mb-12 max-w-[820px] mx-2 sm:mx-6"
-              >
-                <pre className="px-5 sm:px-10 py-6 sm:py-9 leading-[2] sm:leading-[2.1] tracking-[0.01em] overflow-x-auto font-mono text-[11px] sm:text-[13.5px]">
-                  {[
-                    "const company = {",
-                    '  name: "DevCore",',
-                    '  category: "Software Development & Digital Experiences",',
-                    '  tagline: "We Build Digital Experiences Beyond Ordinary.",',
-                    '  focus: "High-performance web apps & immersive 3D digital experiences",',
-                    '  stack: ["Next.js", "TypeScript", "React", "Node.js", "Three.js", "Tailwind CSS"],',
-                    '  mission: "Combining thoughtful design and reliable engineering for ambitious businesses",',
-                    "};",
-                    "",
-                    "// Building things that matter. Scroll down. Discover DevCore.",
-                  ].map((line, i) => (
-                    <CodeLine key={i} n={i + 1} line={line} />
-                  ))}
-                </pre>
-              </Safari_01>
+              {/* Split View: Code + Live 3D WebGL Canvas */}
+              <div className="mb-8 sm:mb-12 max-w-[960px] mx-2 sm:mx-6">
+                {/* Mode Selector Tabs */}
+                <div className="flex items-center justify-between mb-3 px-1">
+                  <div className="flex items-center gap-1.5 p-1 rounded-lg bg-white/[0.04] border border-white/[0.08] backdrop-blur-sm">
+                    <button
+                      type="button"
+                      onClick={() => setPreviewMode("split")}
+                      className={`px-3 py-1 rounded text-[11px] font-medium transition-all ${
+                        previewMode === "split"
+                          ? "bg-[#a78bfa]/25 text-[#c4b5fd] border border-[#a78bfa]/40 shadow-[0_0_12px_rgba(167,139,250,0.25)]"
+                          : "text-neutral-400 hover:text-white"
+                      }`}
+                    >
+                      Split View
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setPreviewMode("3d")}
+                      className={`px-3 py-1 rounded text-[11px] font-medium transition-all ${
+                        previewMode === "3d"
+                          ? "bg-cyan-500/25 text-cyan-300 border border-cyan-400/40 shadow-[0_0_12px_rgba(56,189,248,0.25)]"
+                          : "text-neutral-400 hover:text-white"
+                      }`}
+                    >
+                      3D Canvas
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setPreviewMode("code")}
+                      className={`px-3 py-1 rounded text-[11px] font-medium transition-all ${
+                        previewMode === "code"
+                          ? "bg-white/15 text-white border border-white/25"
+                          : "text-neutral-400 hover:text-white"
+                      }`}
+                    >
+                      Code Only
+                    </button>
+                  </div>
+
+                  <div className="hidden sm:flex items-center gap-2 font-mono text-[11px] text-neutral-400">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399] animate-pulse" />
+                    <span>Real-Time 3D Sync</span>
+                  </div>
+                </div>
+
+                <Safari_01
+                  url={
+                    previewMode === "split"
+                      ? "devcore.com/split-view.webgl"
+                      : previewMode === "3d"
+                      ? "devcore.com/canvas-3d.webgl"
+                      : "devcore.com/company.ts"
+                  }
+                  className="shadow-2xl border border-white/[0.08] overflow-hidden"
+                >
+                  <div
+                    className={`grid transition-all duration-300 ${
+                      previewMode === "split"
+                        ? "grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-white/[0.08]"
+                        : "grid-cols-1"
+                    }`}
+                  >
+                    {(previewMode === "split" || previewMode === "code") && (
+                      <div className="p-4 sm:p-6 bg-[#08080c] flex flex-col justify-between">
+                        <div className="flex items-center justify-between pb-3 mb-3 border-b border-white/[0.05] text-[11px]">
+                          <div className="flex items-center gap-2 font-mono text-neutral-300">
+                            <span className="w-2 h-2 rounded-full bg-[#3178c6]" />
+                            <span>company.ts</span>
+                            <span className="text-neutral-600">· TypeScript</span>
+                          </div>
+                          <span className="text-[10px] text-violet-400 font-mono">
+                            Interactive Core
+                          </span>
+                        </div>
+                        <pre className="px-2 py-2 leading-[1.85] sm:leading-[2] tracking-[0.01em] overflow-x-auto font-mono text-[11px] sm:text-[12px]">
+                          {[
+                            "const company = {",
+                            '  name: "DevCore",',
+                            '  category: "Digital Engineering Studio",',
+                            '  focus: "3D & Immersive Web Apps",',
+                            '  engine: "Three.js / WebGL 2.0",',
+                            '  stack: ["Next.js", "React", "GSAP"],',
+                            '  mode: "Real-time 3D Holographic",',
+                            '  status: "ONLINE",',
+                            "};",
+                            "",
+                            "// 3D Canvas running ->",
+                          ].map((line, i) => (
+                            <CodeLine key={i} n={i + 1} line={line} />
+                          ))}
+                        </pre>
+                      </div>
+                    )}
+
+                    {(previewMode === "split" || previewMode === "3d") && (
+                      <div className="relative min-h-[320px] sm:min-h-[380px] bg-[#050508] flex flex-col">
+                        <VSCode3DPreview />
+                      </div>
+                    )}
+                  </div>
+                </Safari_01>
+              </div>
 
               {/* Buttons */}
               <div
