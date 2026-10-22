@@ -1,8 +1,8 @@
 "use client";
-import React, { useEffect, useRef, useCallback, useMemo } from 'react';
+import React, { useEffect, useRef, useCallback, useMemo, useState } from 'react';
 import './ProfileCard.css';
 
-const DEFAULT_INNER_GRADIENT = 'linear-gradient(145deg,#60496e8c 0%,#71C4FF44 100%)';
+const DEFAULT_INNER_GRADIENT = 'linear-gradient(145deg, rgba(96, 73, 110, 0.55) 0%, rgba(113, 196, 255, 0.25) 100%)';
 
 const ANIMATION_CONFIG = {
   INITIAL_DURATION: 1200,
@@ -41,22 +41,20 @@ export interface ProfileCardProps {
 }
 
 const ProfileCardComponent: React.FC<ProfileCardProps> = ({
-  avatarUrl = '<Placeholder for avatar URL>',
-  iconUrl = '<Placeholder for icon URL>',
-  grainUrl = '<Placeholder for grain URL>',
+  iconUrl = '/iconpattern.png',
+  grainUrl = '/grain.webp',
   innerGradient,
   behindGlowEnabled = true,
   behindGlowColor,
   behindGlowSize,
   className = '',
   enableTilt = true,
-  enableMobileTilt = false,
+  enableMobileTilt = true,
   mobileTiltSensitivity = 5,
-  miniAvatarUrl,
   name = 'DevCore',
   title = 'Digital Engineering',
   handle = 'devcore',
-  status = 'Available',
+  status = 'Available for Projects',
   contactText = 'Start a Conversation',
   contactHref = 'mailto:devcore@devcore.com',
   showUserInfo = true,
@@ -64,6 +62,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
 }) => {
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const shellRef = useRef<HTMLDivElement | null>(null);
+  const [copied, setCopied] = useState(false);
 
   const enterTimerRef = useRef<number | null>(null);
   const leaveRafRef = useRef<number | null>(null);
@@ -149,66 +148,52 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
     };
 
     return {
-      setImmediate(x: number, y: number) {
-        currentX = x;
-        currentY = y;
-        setVarsFromXY(currentX, currentY);
-      },
-      setTarget(x: number, y: number) {
+      setTarget: (x: number, y: number) => {
         targetX = x;
         targetY = y;
         start();
       },
-      toCenter() {
-        const shell = shellRef.current;
-        if (!shell) return;
-        this.setTarget(shell.clientWidth / 2, shell.clientHeight / 2);
+      setTargetImmediate: (x: number, y: number) => {
+        targetX = x;
+        targetY = y;
+        currentX = x;
+        currentY = y;
+        setVarsFromXY(x, y);
       },
-      beginInitial(durationMs: number) {
-        initialUntil = performance.now() + durationMs;
-        start();
+      setInitialUntil: (until: number) => {
+        initialUntil = until;
       },
-      getCurrent() {
-        return { x: currentX, y: currentY, tx: targetX, ty: targetY };
-      },
-      cancel() {
-        if (rafId) cancelAnimationFrame(rafId);
-        rafId = null;
+      cancel: () => {
         running = false;
-        lastTs = 0;
+        if (rafId) {
+          cancelAnimationFrame(rafId);
+          rafId = null;
+        }
       },
     };
   }, [enableTilt]);
 
-  const getOffsets = (evt: PointerEvent, el: HTMLElement) => {
-    const rect = el.getBoundingClientRect();
-    return { x: evt.clientX - rect.left, y: evt.clientY - rect.top };
-  };
-
   const handlePointerMove = useCallback(
-    (event: PointerEvent) => {
+    (e: PointerEvent) => {
       const shell = shellRef.current;
       if (!shell || !tiltEngine) return;
-      const { x, y } = getOffsets(event, shell);
-      tiltEngine.setTarget(x, y);
+      const rect = shell.getBoundingClientRect();
+      tiltEngine.setTarget(e.clientX - rect.left, e.clientY - rect.top);
     },
     [tiltEngine]
   );
 
   const handlePointerEnter = useCallback(
-    (event: PointerEvent) => {
+    (e: PointerEvent) => {
       const shell = shellRef.current;
       if (!shell || !tiltEngine) return;
-
-      shell.classList.add('active');
       shell.classList.add('entering');
+      const rect = shell.getBoundingClientRect();
+      tiltEngine.setTarget(e.clientX - rect.left, e.clientY - rect.top);
       if (enterTimerRef.current) window.clearTimeout(enterTimerRef.current);
       enterTimerRef.current = window.setTimeout(() => {
         shell.classList.remove('entering');
       }, ANIMATION_CONFIG.ENTER_TRANSITION_MS);
-
-      const { x, y } = getOffsets(event, shell);
-      tiltEngine.setTarget(x, y);
     },
     [tiltEngine]
   );
@@ -216,113 +201,81 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
   const handlePointerLeave = useCallback(() => {
     const shell = shellRef.current;
     if (!shell || !tiltEngine) return;
-
-    tiltEngine.toCenter();
-
-    const checkSettle = () => {
-      const { x, y, tx, ty } = tiltEngine.getCurrent();
-      const settled = Math.hypot(tx - x, ty - y) < 0.6;
-      if (settled) {
-        shell.classList.remove('active');
-        leaveRafRef.current = null;
-      } else {
-        leaveRafRef.current = requestAnimationFrame(checkSettle);
-      }
-    };
-    if (leaveRafRef.current) cancelAnimationFrame(leaveRafRef.current);
-    leaveRafRef.current = requestAnimationFrame(checkSettle);
+    tiltEngine.setTarget(shell.clientWidth / 2, shell.clientHeight / 2);
   }, [tiltEngine]);
 
   const handleDeviceOrientation = useCallback(
-    (event: DeviceOrientationEvent) => {
+    (e: DeviceOrientationEvent) => {
       const shell = shellRef.current;
       if (!shell || !tiltEngine) return;
 
-      const { beta, gamma } = event;
-      if (beta == null || gamma == null) return;
+      const { beta, gamma } = e;
+      if (beta === null || gamma === null) return;
 
-      const centerX = shell.clientWidth / 2;
-      const centerY = shell.clientHeight / 2;
-      const x = clamp(centerX + gamma * mobileTiltSensitivity, 0, shell.clientWidth);
-      const y = clamp(
-        centerY + (beta - ANIMATION_CONFIG.DEVICE_BETA_OFFSET) * mobileTiltSensitivity,
-        0,
-        shell.clientHeight
-      );
+      const b = clamp(beta, -90, 90);
+      const g = clamp(gamma, -90, 90);
 
-      tiltEngine.setTarget(x, y);
+      const fX = (g + 90) / 180;
+      const fY = (b + 90) / 180;
+
+      const tX = fX * shell.clientWidth;
+      const tY = fY * shell.clientHeight;
+
+      tiltEngine.setTarget(tX, tY);
     },
-    [tiltEngine, mobileTiltSensitivity]
+    [tiltEngine]
   );
 
   useEffect(() => {
-    if (!enableTilt || !tiltEngine) return;
-
     const shell = shellRef.current;
     const wrap = wrapRef.current;
-    if (!shell || !wrap) return;
+    if (!shell || !wrap || !tiltEngine) return;
 
-    const pointerMoveHandler = handlePointerMove;
-    const pointerEnterHandler = handlePointerEnter;
-    const pointerLeaveHandler = handlePointerLeave;
-    const deviceOrientationHandler = handleDeviceOrientation;
+    let hasStarted = false;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        if (entry.isIntersecting && !hasStarted) {
+          hasStarted = true;
+          const rect = shell.getBoundingClientRect();
+          const cx = rect.width / 2;
+          const cy = rect.height / 2;
+
+          tiltEngine.setTargetImmediate(
+            cx + ANIMATION_CONFIG.INITIAL_X_OFFSET,
+            cy + ANIMATION_CONFIG.INITIAL_Y_OFFSET
+          );
+          tiltEngine.setInitialUntil(performance.now() + ANIMATION_CONFIG.INITIAL_DURATION);
+          tiltEngine.setTarget(cx, cy);
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    observer.observe(shell);
+
+    const pointerEnterHandler = (e: PointerEvent) => handlePointerEnter(e);
+    const pointerMoveHandler = (e: PointerEvent) => handlePointerMove(e);
+    const pointerLeaveHandler = () => handlePointerLeave();
 
     shell.addEventListener('pointerenter', pointerEnterHandler as EventListener);
     shell.addEventListener('pointermove', pointerMoveHandler as EventListener);
-    shell.addEventListener('pointerleave', pointerLeaveHandler as EventListener);
+    shell.addEventListener('pointerleave', pointerLeaveHandler);
 
-    const handleClick = () => {
-      if (!enableMobileTilt || location.protocol !== 'https:') return;
-      const anyMotion = (window as unknown as { DeviceMotionEvent?: { requestPermission?: () => Promise<string> } })
-        .DeviceMotionEvent;
-      if (anyMotion && typeof anyMotion.requestPermission === 'function') {
-        anyMotion
-          .requestPermission()
-          .then((state) => {
-            if (state === 'granted') {
-              window.addEventListener('deviceorientation', deviceOrientationHandler);
-            }
-          })
-          .catch(console.error);
-      } else {
-        window.addEventListener('deviceorientation', deviceOrientationHandler);
-      }
-    };
-    shell.addEventListener('click', handleClick);
-
-    // Defer tilt initial animation + CSS animations until card is in viewport
-    let initialStarted = false;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            wrap.classList.add('in-view');
-            if (!initialStarted) {
-              initialStarted = true;
-              const initialX = (shell.clientWidth || 0) - ANIMATION_CONFIG.INITIAL_X_OFFSET;
-              const initialY = ANIMATION_CONFIG.INITIAL_Y_OFFSET;
-              tiltEngine.setImmediate(initialX, initialY);
-              tiltEngine.toCenter();
-              tiltEngine.beginInitial(ANIMATION_CONFIG.INITIAL_DURATION);
-            }
-          } else {
-            wrap.classList.remove('in-view');
-            tiltEngine.cancel();
-            initialStarted = false;
-          }
-        }
-      },
-      { threshold: 0.1 }
-    );
-    observer.observe(wrap);
+    let deviceOrientationHandler: (e: DeviceOrientationEvent) => void;
+    if (enableMobileTilt) {
+      deviceOrientationHandler = (e: DeviceOrientationEvent) => handleDeviceOrientation(e);
+      window.addEventListener('deviceorientation', deviceOrientationHandler);
+    }
 
     return () => {
       observer.disconnect();
       shell.removeEventListener('pointerenter', pointerEnterHandler as EventListener);
       shell.removeEventListener('pointermove', pointerMoveHandler as EventListener);
-      shell.removeEventListener('pointerleave', pointerLeaveHandler as EventListener);
-      shell.removeEventListener('click', handleClick);
-      window.removeEventListener('deviceorientation', deviceOrientationHandler);
+      shell.removeEventListener('pointerleave', pointerLeaveHandler);
+      if (enableMobileTilt && deviceOrientationHandler) {
+        window.removeEventListener('deviceorientation', deviceOrientationHandler);
+      }
       if (enterTimerRef.current) window.clearTimeout(enterTimerRef.current);
       if (leaveRafRef.current) cancelAnimationFrame(leaveRafRef.current);
       tiltEngine.cancel();
@@ -344,11 +297,18 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
         '--icon': iconUrl ? `url(${iconUrl})` : 'none',
         '--grain': grainUrl ? `url(${grainUrl})` : 'none',
         '--inner-gradient': innerGradient ?? DEFAULT_INNER_GRADIENT,
-        '--behind-glow-color': behindGlowColor ?? 'rgba(125, 190, 255, 0.67)',
-        '--behind-glow-size': behindGlowSize ?? '50%',
+        '--behind-glow-color': behindGlowColor ?? 'rgba(139, 92, 246, 0.45)',
+        '--behind-glow-size': behindGlowSize ?? '60%',
       }) as React.CSSProperties,
     [iconUrl, grainUrl, innerGradient, behindGlowColor, behindGlowSize]
   );
+
+  const handleCopyEmail = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    navigator.clipboard?.writeText('devcore@devcore.com');
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2200);
+  }, []);
 
   const handleContactClick = useCallback(() => {
     onContactClick?.();
@@ -362,45 +322,110 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
           <div className="pc-inside">
             <div className="pc-shine" />
             <div className="pc-glare" />
-            <div className="pc-content pc-avatar-content">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                className="avatar"
-                src={avatarUrl}
-                alt={`${name || 'User'} avatar`}
-                loading="lazy"
-                decoding="async"
-                width={500}
-                height={500}
-                onError={(e) => {
-                  const t = e.target as HTMLImageElement;
-                  t.style.display = 'none';
-                }}
-              />
-              {showUserInfo && (
-                <div className="pc-user-info">
-                  <div className="pc-user-details">
-                    <div className="pc-mini-avatar">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={miniAvatarUrl || avatarUrl}
-                        alt={`${name || 'User'} mini avatar`}
-                        loading="lazy"
-                        decoding="async"
-                        width={48}
-                        height={48}
-                        onError={(e) => {
-                          const t = e.target as HTMLImageElement;
-                          t.style.opacity = '0.5';
-                          t.src = avatarUrl;
-                        }}
-                      />
-                    </div>
-                    <div className="pc-user-text">
-                      <div className="pc-handle">@{handle}</div>
-                      <div className="pc-status">{status}</div>
-                    </div>
+
+            {/* Top Brand & Title Header */}
+            <div className="pc-details-header">
+              <div className="pc-badge-tag">
+                <span className="pc-pulse-dot" />
+                <span>DEVCORE STUDIO // V2.0</span>
+              </div>
+              <h3 className="pc-title-brand">{name}</h3>
+              <p className="pc-subtitle-spec">{title}</p>
+            </div>
+
+            {/* Central Creative Holographic Emblem (Replaces boy photo) */}
+            <div className="pc-emblem-container">
+              <div className="pc-emblem-orbit pc-orbit-1" />
+              <div className="pc-emblem-orbit pc-orbit-2" />
+              <div className="pc-emblem-orbit pc-orbit-3" />
+              
+              {/* Central Glowing Cyber Core */}
+              <div className="pc-emblem-core">
+                <svg
+                  viewBox="0 0 100 100"
+                  className="pc-core-svg"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <defs>
+                    <linearGradient id="coreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#c084fc" />
+                      <stop offset="50%" stopColor="#818cf8" />
+                      <stop offset="100%" stopColor="#38bdf8" />
+                    </linearGradient>
+                  </defs>
+                  {/* Outer Hexagon */}
+                  <polygon
+                    points="50,6 90,28 90,72 50,94 10,72 10,28"
+                    stroke="url(#coreGrad)"
+                    strokeWidth="2"
+                    strokeDasharray="6 4"
+                    opacity="0.8"
+                  />
+                  {/* Inner Diamond / Core */}
+                  <polygon
+                    points="50,20 80,50 50,80 20,50"
+                    stroke="url(#coreGrad)"
+                    strokeWidth="2.5"
+                    fill="rgba(139, 92, 246, 0.15)"
+                  />
+                  {/* DevCore Center Monogram */}
+                  <path
+                    d="M38 38 L38 62 M38 38 C48 38 52 42 52 50 C52 58 48 62 38 62"
+                    stroke="#ffffff"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                  />
+                  <path
+                    d="M62 42 C58 38 54 42 54 50 C54 58 58 62 62 58"
+                    stroke="#38bdf8"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </div>
+
+              {/* Floating Holographic Telemetry Chips */}
+              <div className="pc-telemetry-badge pc-telemetry-top">
+                <span>EST. 2024</span>
+                <span className="pc-sep">•</span>
+                <span>ENGINEERING LAB</span>
+              </div>
+              <div className="pc-telemetry-badge pc-telemetry-bot">
+                <span>LATENCY: &lt;10MS</span>
+                <span className="pc-sep">•</span>
+                <span>NEXT-GEN WEB</span>
+              </div>
+            </div>
+
+            {/* Bottom User Info & Interactive Actions */}
+            {showUserInfo && (
+              <div className="pc-user-info">
+                <div className="pc-user-details">
+                  <div className="pc-status-icon-box">
+                    <span className="pc-status-live-beacon" />
                   </div>
+                  <div className="pc-user-text">
+                    <div className="pc-handle">@{handle}</div>
+                    <div className="pc-status">{status}</div>
+                  </div>
+                </div>
+
+                <div className="pc-action-group">
+                  <button
+                    type="button"
+                    onClick={handleCopyEmail}
+                    className="pc-copy-btn"
+                    title="Copy Email"
+                    aria-label="Copy Email"
+                  >
+                    {copied ? (
+                      <span className="text-emerald-400 font-bold">✓ Copied</span>
+                    ) : (
+                      <span>Copy Email</span>
+                    )}
+                  </button>
+
                   {contactHref ? (
                     <a
                       className="pc-contact-btn"
@@ -408,8 +433,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={handleContactClick}
-                      style={{ pointerEvents: 'auto', display: 'inline-flex', alignItems: 'center', textDecoration: 'none' }}
-                      aria-label={`Contact ${name || 'user'}`}
+                      aria-label={`Contact ${name}`}
                     >
                       {contactText}
                     </a>
@@ -417,22 +441,15 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
                     <button
                       className="pc-contact-btn"
                       onClick={handleContactClick}
-                      style={{ pointerEvents: 'auto' }}
                       type="button"
-                      aria-label={`Contact ${name || 'user'}`}
+                      aria-label={`Contact ${name}`}
                     >
                       {contactText}
                     </button>
                   )}
                 </div>
-              )}
-            </div>
-            <div className="pc-content">
-              <div className="pc-details">
-                <h3>{name}</h3>
-                <p>{title}</p>
               </div>
-            </div>
+            )}
           </div>
         </section>
       </div>

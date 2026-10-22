@@ -5,8 +5,7 @@ import { NotepadTextDashed } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const isExternalUrl = (href: string) => /^https?:\/\//i.test(href);
-const isProtocolLink = (href: string) =>
-  /^(mailto:|tel:|sms:)/i.test(href);
+const isProtocolLink = (href: string) => /^(mailto:|tel:|sms:)/i.test(href);
 
 interface FooterLink {
   label: string;
@@ -31,8 +30,8 @@ interface FooterProps {
 }
 
 export const Footer = ({
-  brandName = "YourBrand",
-  brandDescription = "Your description here",
+  brandName = "DevCore",
+  brandDescription = "Engineering modern digital experiences through thoughtful design and reliable software development.",
   socialLinks = [],
   navLinks = [],
   creatorName,
@@ -41,181 +40,126 @@ export const Footer = ({
   className,
 }: FooterProps) => {
   return (
-    <section className={cn("relative w-full min-h-screen flex flex-col mt-0 overflow-hidden", className)}>
-      <footer className="border-t bg-background relative flex-1 flex flex-col">
-        <div className="max-w-7xl w-full flex flex-col mx-auto min-h-screen relative px-6 md:px-12" style={{ paddingTop: "10vh", paddingBottom: "8vh", paddingLeft: "18vh"}}>
-          <div className="flex-1 flex flex-col items-center justify-start w-full">
-            <div className="w-full flex flex-col items-center">
-              <div className="flex flex-col items-center gap-8">
-                <span className="text-foreground text-4xl md:text-5xl font-bold tracking-tight">
-                  {brandName}
-                </span>
-                <p
-                  className="text-muted-foreground font-medium text-center text-base leading-loose"
-                  style={{ whiteSpace: "nowrap", marginBottom: "32px" }}
-                >
-                  {brandDescription}
-                </p>
-              </div>
+    <section className={cn("relative w-full flex flex-col mt-0 overflow-hidden bg-black", className)}>
+      <footer className="border-t border-white/10 bg-black/90 relative flex-1 flex flex-col">
+        {/* Main Content Area */}
+        <div className="max-w-6xl w-full flex flex-col mx-auto relative z-10 px-4 sm:px-8 md:px-12 pt-16 md:pt-24 pb-12 md:pb-16">
+          <div className="flex flex-col items-center justify-center text-center w-full">
+            
+            {/* Brand Title & Tagline */}
+            <div className="flex flex-col items-center gap-3 max-w-2xl px-2">
+              <span className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white">
+                {brandName}
+              </span>
+              <p className="text-neutral-400 font-normal text-sm sm:text-base leading-relaxed max-w-lg mx-auto">
+                {brandDescription}
+              </p>
+            </div>
 
-              {socialLinks.length > 0 && socialLinks.length === navLinks.length ? (
-                <div
-                  className="mt-14 grid"
-                  style={{
-                    gridTemplateColumns: `repeat(${socialLinks.length}, minmax(0, 1fr))`,
-                    columnGap: "56px",
-                    rowGap: "16px",
-                    justifyItems: "center",
-                  }}
-                >
-                  {socialLinks.map((link, index) => {
-                    const proto = isProtocolLink(link.href);
-                    const external = isExternalUrl(link.href);
+            {/* Social Icons Row */}
+            {socialLinks.length > 0 && (
+              <div className="flex items-center justify-center gap-6 mt-8 sm:mt-10">
+                {socialLinks.map((link, index) => {
+                  const proto = isProtocolLink(link.href);
+                  const external = isExternalUrl(link.href);
+                  return (
+                    <a
+                      key={index}
+                      href={link.href}
+                      className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 hover:border-violet-500/50 hover:bg-violet-500/10 text-neutral-300 hover:text-white transition-all duration-300 flex items-center justify-center hover:scale-105"
+                      target={proto ? undefined : external ? "_blank" : undefined}
+                      rel={external ? "noopener noreferrer" : undefined}
+                      aria-label={link.label}
+                    >
+                      <div className="w-5 h-5 flex items-center justify-center">
+                        {link.icon}
+                      </div>
+                      <span className="sr-only">{link.label}</span>
+                    </a>
+                  );
+                })}
+              </div>
+            )}
+
+            {/* Navigation Links Row */}
+            {navLinks.length > 0 && (
+              <nav className="flex flex-wrap items-center justify-center gap-x-6 sm:gap-x-10 gap-y-3 mt-8 sm:mt-10 text-xs sm:text-sm font-medium text-neutral-400 max-w-2xl px-4">
+                {navLinks.map((link, index) => {
+                  const proto = isProtocolLink(link.href);
+                  const external = isExternalUrl(link.href);
+                  if (proto || external) {
                     return (
                       <a
-                        key={`s-${index}`}
+                        key={index}
+                        className="hover:text-white transition-colors duration-200 tracking-wide"
                         href={link.href}
-                        className="text-muted-foreground hover:text-foreground transition-colors flex justify-center"
-                        target={proto ? undefined : external ? "_blank" : undefined}
+                        target={proto ? undefined : "_blank"}
                         rel={external ? "noopener noreferrer" : undefined}
-                        style={{ gridRow: 1, gridColumn: index + 1 }}
-                      >
-                        <div className="w-6 h-6 hover:scale-110 duration-300 flex items-center justify-center">
-                          {link.icon}
-                        </div>
-                        <span className="sr-only">{link.label}</span>
-                      </a>
-                    );
-                  })}
-                  {navLinks.map((link, index) => {
-                    const proto = isProtocolLink(link.href);
-                    const external = isExternalUrl(link.href);
-                    if (proto || external) {
-                      return (
-                        <a
-                          key={`n-${index}`}
-                          className="hover:text-foreground duration-300 hover:font-semibold text-base font-medium text-muted-foreground text-center"
-                          href={link.href}
-                          target={proto ? undefined : "_blank"}
-                          rel={external ? "noopener noreferrer" : undefined}
-                          style={{ gridRow: 2, gridColumn: index + 1 }}
-                        >
-                          {link.label}
-                        </a>
-                      );
-                    }
-                    return (
-                      <Link
-                        key={`n-${index}`}
-                        className="hover:text-foreground duration-300 hover:font-semibold text-base font-medium text-muted-foreground text-center"
-                        href={link.href}
-                        style={{ gridRow: 2, gridColumn: index + 1 }}
                       >
                         {link.label}
-                      </Link>
+                      </a>
                     );
-                  })}
-                </div>
-              ) : (
-                <>
-                  {socialLinks.length > 0 && (
-                    <div className="flex mt-14 gap-8">
-                      {socialLinks.map((link, index) => {
-                        const proto = isProtocolLink(link.href);
-                        const external = isExternalUrl(link.href);
-                        return (
-                          <a
-                            key={index}
-                            href={link.href}
-                            className="text-muted-foreground hover:text-foreground transition-colors"
-                            target={proto ? undefined : external ? "_blank" : undefined}
-                            rel={external ? "noopener noreferrer" : undefined}
-                          >
-                            <div className="w-6 h-6 hover:scale-110 duration-300">
-                              {link.icon}
-                            </div>
-                            <span className="sr-only">{link.label}</span>
-                          </a>
-                        );
-                      })}
-                    </div>
-                  )}
+                  }
+                  return (
+                    <Link
+                      key={index}
+                      className="hover:text-white transition-colors duration-200 tracking-wide"
+                      href={link.href}
+                    >
+                      {link.label}
+                    </Link>
+                  );
+                })}
+              </nav>
+            )}
 
-                  {navLinks.length > 0 && (
-                    <div className="flex flex-wrap justify-center gap-10 mt-14 text-base font-medium text-muted-foreground max-w-full px-4">
-                      {navLinks.map((link, index) => {
-                        const proto = isProtocolLink(link.href);
-                        const external = isExternalUrl(link.href);
-                        if (proto || external) {
-                          return (
-                            <a
-                              key={index}
-                              className="hover:text-foreground duration-300 hover:font-semibold"
-                              href={link.href}
-                              target={proto ? undefined : "_blank"}
-                              rel={external ? "noopener noreferrer" : undefined}
-                            >
-                              {link.label}
-                            </a>
-                          );
-                        }
-                        return (
-                          <Link
-                            key={index}
-                            className="hover:text-foreground duration-300 hover:font-semibold"
-                            href={link.href}
-                          >
-                            {link.label}
-                          </Link>
-                        );
-                      })}
-                    </div>
+            {/* Floating DevCore Emblem Pill */}
+            <div className="mt-12 sm:mt-16 flex items-center justify-center">
+              <div className="p-3 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md shadow-[0_0_25px_rgba(139,92,246,0.15)] flex items-center justify-center">
+                <div className="w-10 sm:w-12 h-10 sm:h-12 bg-gradient-to-br from-violet-600 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg">
+                  {brandIcon || (
+                    <NotepadTextDashed className="w-6 h-6 text-white drop-shadow-md" />
                   )}
-                </>
-              )}
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Giant Brand Watermark */}
+            <div className="w-full overflow-hidden select-none pointer-events-none mt-6 mb-4">
+              <div
+                className="bg-gradient-to-b from-white/10 via-white/5 to-transparent bg-clip-text text-transparent font-extrabold tracking-tighter text-center leading-none"
+                style={{
+                  fontSize: "clamp(3.5rem, 14vw, 11rem)",
+                }}
+              >
+                {brandName.toUpperCase()}
+              </div>
             </div>
           </div>
 
-          <div className="flex flex-col gap-2 md:gap-1 items-center justify-center md:flex-row md:items-center md:justify-between px-4 md:px-0">
-            <p className="text-base text-muted-foreground text-center md:text-left">
-              ©{new Date().getFullYear()} {brandName}. All rights reserved.
+          {/* Copyright & Bottom Metadata */}
+          <div className="pt-8 mt-4 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs sm:text-sm text-neutral-400">
+            <p className="text-center sm:text-left">
+              © {new Date().getFullYear()} {brandName}. All rights reserved.
             </p>
-            {creatorName && creatorUrl && (
-              <nav className="flex gap-4">
-                <Link
-                  href={creatorUrl}
-                  target="_blank"
-                  className="text-base text-muted-foreground hover:text-foreground transition-colors duration-300 hover:font-medium"
-                >
-                  Crafted by {creatorName}
-                </Link>
-              </nav>
+            {creatorName && creatorUrl ? (
+              <a
+                href={creatorUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white transition-colors"
+              >
+                Crafted by {creatorName}
+              </a>
+            ) : (
+              <p className="text-neutral-400 text-center sm:text-right">
+                Software Development &amp; Digital Experiences
+              </p>
             )}
           </div>
         </div>
-
-        <div
-          className="bg-gradient-to-b from-foreground/20 via-foreground/10 to-transparent bg-clip-text text-transparent leading-none absolute left-1/2 -translate-x-1/2 bottom-28 md:bottom-24 font-extrabold tracking-tighter pointer-events-none select-none text-center px-4"
-          style={{
-            fontSize: "clamp(4rem, 16vw, 14rem)",
-            maxWidth: "95vw",
-          }}
-        >
-          {brandName.toUpperCase()}
-        </div>
-
-        <div className="absolute hover:border-foreground duration-400 drop-shadow-[0_0px_20px_rgba(0,0,0,0.5)] dark:drop-shadow-[0_0px_20px_rgba(255,255,255,0.3)] bottom-28 md:bottom-28 backdrop-blur-sm rounded-3xl bg-background/60 left-1/2 border-2 border-border flex items-center justify-center p-3 -translate-x-1/2 z-10">
-          <div className="w-12 sm:w-16 md:w-24 h-12 sm:h-16 md:h-24 bg-gradient-to-br from-foreground to-foreground/80 rounded-2xl flex items-center justify-center shadow-lg">
-            {brandIcon || (
-              <NotepadTextDashed className="w-8 sm:w-10 md:w-14 h-8 sm:h-10 md:h-14 text-background drop-shadow-lg" />
-            )}
-          </div>
-        </div>
-
-        <div className="absolute bottom-32 sm:bottom-34 backdrop-blur-sm h-1 bg-gradient-to-r from-transparent via-border to-transparent w-full left-1/2 -translate-x-1/2"></div>
-
-        <div className="bg-gradient-to-t from-background via-background/80 blur-[1em] to-background/40 absolute bottom-28 w-full h-24"></div>
       </footer>
     </section>
   );
 };
+export default Footer;

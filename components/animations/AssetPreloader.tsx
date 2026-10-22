@@ -14,7 +14,6 @@ const RAW_IMAGE_PATHS = [
   "/Proofstack-1.avif",
 
   // Profile card backgrounds
-  "/profilecard.avif",
   "/iconpattern.png",
   "/grain.webp",
 ];

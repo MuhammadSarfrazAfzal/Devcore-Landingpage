@@ -160,42 +160,43 @@ export default function Home() {
 
       <ZoomParallaxDemo />
 
-      <ScrollReveal className="w-full">
-        <section id="contact" className="min-h-screen w-full flex flex-col items-center justify-center bg-black px-6 py-24 text-center">
-          <div className="max-w-2xl mb-12">
-            <span className="text-xs font-bold uppercase tracking-[0.3em] text-[#a78bfa] mb-3 block">
-              Contact DevCore
-            </span>
-            <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-white mb-6">
-              Have an Idea? Let&apos;s Build It.
-            </h2>
-            <p className="text-neutral-400 text-base md:text-lg leading-relaxed">
-              Have a product idea, a business challenge, or a digital experience in mind? Get in touch with DevCore and let&apos;s discuss how we can bring it to life.
-            </p>
+      <section id="contact" className="w-full relative flex flex-col items-center justify-center bg-black px-4 sm:px-6 py-12 sm:py-20 md:py-28 text-center overflow-hidden">
+        {/* Subtle Ambient Cosmic Glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] sm:w-[620px] h-[320px] sm:h-[620px] bg-gradient-to-tr from-violet-600/15 via-cyan-500/10 to-transparent blur-[120px] rounded-full pointer-events-none" />
+
+        <div className="max-w-2xl mx-auto mb-10 sm:mb-14 px-2 relative z-10">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-violet-500/10 border border-violet-500/25 text-[11px] font-bold uppercase tracking-[0.25em] text-[#a78bfa] mb-4 backdrop-blur-md">
+            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_#38bdf8]" />
+            Initiate Transmission
           </div>
+          <h2 className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white mb-4 leading-tight">
+            Have an Idea? <span className="bg-gradient-to-r from-white via-violet-200 to-cyan-400 bg-clip-text text-transparent">Let&apos;s Build It.</span>
+          </h2>
+          <p className="text-neutral-400 text-sm sm:text-base md:text-lg leading-relaxed max-w-xl mx-auto">
+            Have a product idea, a business challenge, or a next-generation digital experience in mind? Connect directly with the DevCore engineering studio.
+          </p>
+        </div>
+
+        <div className="w-full flex justify-center relative z-10">
           <ProfileCard
             name="DevCore"
-            title="Digital Engineering"
+            title="Digital Engineering Studio"
             handle="devcore"
-            status="Available"
+            status="Available for Projects"
             contactText="Start a Conversation"
-            avatarUrl="/profilecard.avif"
-            miniAvatarUrl="/profilecard.avif"
             iconUrl="/iconpattern.png"
             grainUrl="/grain.webp"
             showUserInfo
             enableTilt
             enableMobileTilt
             behindGlowEnabled
-            innerGradient="linear-gradient(145deg,#60496e8c 0%,#71C4FF44 100%)"
+            innerGradient="linear-gradient(145deg, rgba(96, 73, 110, 0.6) 0%, rgba(56, 189, 248, 0.25) 100%)"
             contactHref="mailto:devcore@devcore.com"
           />
-        </section>
-      </ScrollReveal>
+        </div>
+      </section>
 
-      <ScrollReveal className="w-full">
-        <FooterDemo />
-      </ScrollReveal>
+      <FooterDemo />
     </main>
   );
 }

@@ -1,11 +1,20 @@
 "use client";
 
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { getLenis } from "@/hooks/useLenis";
+
+const BOOT_LOGS = [
+  "INITIALIZING DEVCORE ARCHITECTURE",
+  "COMPILING HIGH-PRECISION SHADERS",
+  "CALIBRATING 3D DIGITAL VIEWPORTS",
+  "SYNCHRONIZING CINEMATIC ENGINE",
+  "ALL SYSTEMS OPERATIONAL // ONLINE",
+];
 
 export default function DevCoreLoader() {
   const [progress, setProgress] = useState(0);
+  const [logIndex, setLogIndex] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
   const [isRevealing, setIsRevealing] = useState(false);
   const [isExited, setIsExited] = useState(false);
@@ -17,11 +26,12 @@ export default function DevCoreLoader() {
     getLenis()?.start();
     setTimeout(() => {
       setIsExited(true);
-    }, 1150);
+    }, 1100);
   }, []);
 
   const handleSkip = useCallback(() => {
     setProgress(100);
+    setLogIndex(BOOT_LOGS.length - 1);
     setIsComplete(true);
     triggerOpen();
   }, [triggerOpen]);
@@ -35,7 +45,7 @@ export default function DevCoreLoader() {
     const lenis = getLenis();
     lenis?.stop();
 
-    // Listen for ESC key to skip
+    // Listen for ESC or Space key to skip
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" || e.key === " ") {
         handleSkip();
@@ -50,11 +60,11 @@ export default function DevCoreLoader() {
     let current = 0;
     const interval = setInterval(() => {
       let increment = 1;
-      if (current < 35) {
+      if (current < 30) {
         increment = Math.floor(Math.random() * 4) + 2; // +2..5
-      } else if (current < 75) {
-        increment = Math.floor(Math.random() * 3) + 1; // +1..3
-      } else if (current < 92) {
+      } else if (current < 70) {
+        increment = Math.floor(Math.random() * 3) + 2; // +2..4
+      } else if (current < 90) {
         increment = Math.floor(Math.random() * 2) + 1; // +1..2
       } else {
         increment = 1;
@@ -63,16 +73,23 @@ export default function DevCoreLoader() {
       current = Math.min(100, current + increment);
       setProgress(current);
 
+      // Cycle boot log status
+      if (current < 25) setLogIndex(0);
+      else if (current < 55) setLogIndex(1);
+      else if (current < 80) setLogIndex(2);
+      else if (current < 99) setLogIndex(3);
+      else setLogIndex(4);
+
       if (current >= 100) {
         clearInterval(interval);
         setIsComplete(true);
 
-        // Pause 800ms on "WELCOME TO DEVCORE" before triggering the cinematic split reveal
+        // Pause 700ms on "ALL SYSTEMS OPERATIONAL" before initiating warp portal reveal
         setTimeout(() => {
           triggerOpen();
-        }, 800);
+        }, 700);
       }
-    }, 28);
+    }, 24);
 
     return () => {
       clearInterval(interval);
@@ -86,224 +103,182 @@ export default function DevCoreLoader() {
 
   return (
     <div
-      className="fixed inset-0 z-[99999] pointer-events-auto select-none overflow-hidden"
+      className="fixed inset-0 z-[99999] pointer-events-auto select-none overflow-hidden bg-black"
       style={{ isolation: "isolate" }}
+      onClick={handleSkip}
     >
-      {/* ===== TOP SPLIT VAULT PANEL ===== */}
+      {/* ===== TOP SPLIT SHUTTER PANEL ===== */}
       <motion.div
-        className="absolute top-0 left-0 w-full h-[50vh] bg-[#e7e6e9] overflow-hidden"
+        className="absolute top-0 left-0 w-full h-[50vh] bg-[#040407] border-b border-violet-500/20 overflow-hidden"
         initial={{ y: 0 }}
         animate={{ y: isRevealing ? "-100%" : 0 }}
         transition={{
-          duration: 1.1,
+          duration: 1.05,
           ease: [0.85, 0, 0.15, 1],
         }}
       >
-        {/* Top Header Row */}
-        <div className="absolute top-0 left-0 w-full flex items-center justify-between px-8 md:px-14 py-7 z-20">
+        {/* Subtle Ambient Nebula Glow */}
+        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[500px] h-[350px] bg-violet-600/15 blur-[120px] rounded-full pointer-events-none" />
+
+        {/* Top Header Bar */}
+        <div className="absolute top-0 left-0 w-full flex items-center justify-between px-6 sm:px-12 py-6 z-20">
           <div className="flex items-center gap-3">
-            <span className="text-xl md:text-2xl font-black tracking-tight text-[#111113]">
+            <span className="text-lg sm:text-xl font-extrabold tracking-tight text-white">
               DEVCORE
             </span>
-            <span className="w-1.5 h-1.5 rounded-full bg-[#8b5cf6]" />
-            <span className="hidden sm:inline-block text-[11px] font-bold tracking-[0.25em] text-[#6b6a70] uppercase">
-              Digital Engineering
+            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_#38bdf8]" />
+            <span className="hidden sm:inline-block text-[10px] font-bold tracking-[0.25em] text-neutral-400 uppercase">
+              Digital Engineering Lab
             </span>
           </div>
 
-          {/* Equalizer Wave with Purple Dot (Exact match from user reference) */}
-          <div className="flex items-center">
-            <div className="flex items-end gap-1.5 h-7 px-1">
-              {/* Bar 1 with glowing purple dot */}
-              <div className="flex flex-col items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-[#8b5cf6] shadow-[0_0_12px_rgba(139,92,246,0.9)] animate-pulse" />
-                <span className="w-1 h-3.5 bg-[#18181b] rounded-full" />
-              </div>
-              {/* Bar 2 */}
-              <motion.span
-                className="w-1 bg-[#18181b] rounded-full"
-                animate={{ height: ["10px", "22px", "8px", "18px"] }}
-                transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
-              />
-              {/* Bar 3 */}
-              <motion.span
-                className="w-1 bg-[#18181b] rounded-full"
-                animate={{ height: ["18px", "10px", "24px", "12px"] }}
-                transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
-              />
-              {/* Bar 4 */}
-              <motion.span
-                className="w-1 bg-[#18181b] rounded-full"
-                animate={{ height: ["12px", "24px", "14px", "20px"] }}
-                transition={{ duration: 1.1, repeat: Infinity, ease: "easeInOut" }}
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Top-Half Seamless Marquee - Exactly centered at the bottom edge */}
-        <div className="absolute bottom-0 left-0 w-full translate-y-1/2 pointer-events-none select-none">
-          <div className="flex whitespace-nowrap animate-marquee">
-            <span className="text-[clamp(4.2rem,12vw,12.5rem)] font-black uppercase tracking-tight text-[#0d0d10] leading-none inline-block">
-              DEVELOPER • FRONTEND • FULL-STACK • REACT • NEXT.JS • THREE.JS • DEVCORE • DIGITAL EXPERIENCES •&nbsp;
-            </span>
-            <span className="text-[clamp(4.2rem,12vw,12.5rem)] font-black uppercase tracking-tight text-[#0d0d10] leading-none inline-block">
-              DEVELOPER • FRONTEND • FULL-STACK • REACT • NEXT.JS • THREE.JS • DEVCORE • DIGITAL EXPERIENCES •&nbsp;
+          <div className="flex items-center gap-3 text-xs text-neutral-400">
+            <span className="text-[10px] uppercase font-mono tracking-widest text-neutral-400">
+              [ESC TO SKIP]
             </span>
           </div>
         </div>
       </motion.div>
 
-      {/* ===== BOTTOM SPLIT VAULT PANEL ===== */}
+      {/* ===== BOTTOM SPLIT SHUTTER PANEL ===== */}
       <motion.div
-        className="absolute bottom-0 left-0 w-full h-[50vh] bg-[#e7e6e9] overflow-hidden"
+        className="absolute bottom-0 left-0 w-full h-[50vh] bg-[#040407] border-t border-cyan-500/20 overflow-hidden"
         initial={{ y: 0 }}
         animate={{ y: isRevealing ? "100%" : 0 }}
         transition={{
-          duration: 1.1,
+          duration: 1.05,
           ease: [0.85, 0, 0.15, 1],
         }}
       >
-        {/* Bottom-Half Seamless Marquee - Exactly centered at the top edge */}
-        <div className="absolute top-0 left-0 w-full -translate-y-1/2 pointer-events-none select-none">
-          <div className="flex whitespace-nowrap animate-marquee">
-            <span className="text-[clamp(4.2rem,12vw,12.5rem)] font-black uppercase tracking-tight text-[#0d0d10] leading-none inline-block">
-              DEVELOPER • FRONTEND • FULL-STACK • REACT • NEXT.JS • THREE.JS • DEVCORE • DIGITAL EXPERIENCES •&nbsp;
-            </span>
-            <span className="text-[clamp(4.2rem,12vw,12.5rem)] font-black uppercase tracking-tight text-[#0d0d10] leading-none inline-block">
-              DEVELOPER • FRONTEND • FULL-STACK • REACT • NEXT.JS • THREE.JS • DEVCORE • DIGITAL EXPERIENCES •&nbsp;
-            </span>
-          </div>
-        </div>
+        {/* Subtle Ambient Bottom Cyan Glow */}
+        <div className="absolute -bottom-32 left-1/2 -translate-x-1/2 w-[500px] h-[350px] bg-cyan-600/10 blur-[120px] rounded-full pointer-events-none" />
 
-        {/* Bottom Status Row */}
-        <div className="absolute bottom-0 left-0 w-full flex items-center justify-between px-8 md:px-14 py-7 z-20">
-          <span className="text-xs font-mono tracking-widest text-[#6b6a70] uppercase">
-            [SYS.INIT] 2026.PROD
-          </span>
-          <span className="hidden sm:inline-block text-xs font-mono tracking-widest text-[#6b6a70] uppercase">
-            WE BUILD DIGITAL EXPERIENCES BEYOND ORDINARY
-          </span>
+        {/* Bottom Footer Info */}
+        <div className="absolute bottom-0 left-0 w-full flex items-center justify-between px-6 sm:px-12 py-6 z-20 text-[10px] font-mono text-neutral-400 uppercase tracking-widest">
+          <span>PORTAL // READY</span>
+          <span className="hidden sm:inline">HIGH-PERFORMANCE RUNTIME</span>
+          <span>DEVCORE © 2024</span>
         </div>
       </motion.div>
 
-      {/* ===== CENTER GLOWING PILL CAPSULE (EXACT MATCH FROM USER IMAGE) ===== */}
+      {/* ===== CENTRAL FLOATING HUD & PROGRESS CONSOLE ===== */}
       <motion.div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40 cursor-pointer"
-        onClick={handleSkip}
-        initial={{ scale: 0.9, opacity: 0 }}
+        className="absolute inset-0 flex flex-col items-center justify-center z-30 pointer-events-none px-6"
         animate={{
-          scale: isRevealing ? 1.25 : 1,
           opacity: isRevealing ? 0 : 1,
+          scale: isRevealing ? 1.08 : 1,
         }}
-        transition={{
-          duration: isRevealing ? 0.7 : 0.5,
-          ease: [0.16, 1, 0.3, 1],
-        }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
       >
-        <div
-          className="relative flex items-center justify-between px-5 sm:px-7 py-3 sm:py-3.5 rounded-full bg-[#0a0a0f] text-white overflow-hidden shadow-2xl transition-all duration-300 max-w-[92vw]"
-          style={{
-            minWidth: isComplete ? "min(340px, 90vw)" : "min(280px, 84vw)",
-            height: "58px",
-            border: "1.5px solid rgba(139, 92, 246, 0.5)",
-            boxShadow:
-              "0 0 45px -5px rgba(139, 92, 246, 0.65), 0 15px 45px rgba(0, 0, 0, 0.85), inset 0 0 16px rgba(139, 92, 246, 0.2)",
-          }}
-        >
-          {/* Animated gradient rim highlight */}
+        {/* Rotating Futuristic HUD Reticle */}
+        <div className="relative w-36 sm:w-44 h-36 sm:h-44 flex items-center justify-center mb-8">
+          {/* Outer dashed spinning ring */}
           <div
-            aria-hidden="true"
-            className="absolute -inset-[1.5px] rounded-full pointer-events-none opacity-70"
-            style={{
-              background:
-                "linear-gradient(90deg, rgba(168,85,247,0.9), rgba(99,102,241,0.3), rgba(168,85,247,0.9))",
-              backgroundSize: "200% 100%",
-              animation: "shimmer 2.5s linear infinite",
-              mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-              maskComposite: "exclude",
-              WebkitMaskComposite: "xor",
-              padding: "1.5px",
-            }}
+            className="absolute inset-0 rounded-full border border-dashed border-violet-500/40 animate-spin"
+            style={{ animationDuration: "18s" }}
           />
 
-          {/* Left Text */}
-          <div className="flex items-center gap-2.5 z-10">
-            <span className="relative flex h-2.5 w-2.5">
-              <span
-                className={`absolute inline-flex h-full w-full rounded-full ${
-                  isComplete ? "bg-[#bef264]" : "bg-[#a855f7]"
-                } opacity-75 animate-ping`}
+          {/* Inner counter-spinning tick ring */}
+          <div
+            className="absolute inset-3 rounded-full border border-cyan-400/30 animate-spin"
+            style={{ animationDuration: "12s", animationDirection: "reverse" }}
+          />
+
+          {/* Core glow orb */}
+          <div className="absolute inset-8 rounded-full bg-gradient-to-tr from-violet-600/20 to-cyan-400/20 blur-md" />
+
+          {/* Center DevCore Geometric Monogram */}
+          <div className="relative z-10 flex flex-col items-center justify-center">
+            <svg
+              className="w-12 sm:w-14 h-12 sm:h-14 text-white drop-shadow-[0_0_15px_rgba(139,92,246,0.8)]"
+              viewBox="0 0 100 100"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <polygon
+                points="50,8 88,30 88,70 50,92 12,70 12,30"
+                stroke="url(#loaderGrad)"
+                strokeWidth="3"
+                strokeDasharray="4 2"
               />
-              <span
-                className={`relative inline-flex rounded-full h-2.5 w-2.5 ${
-                  isComplete ? "bg-[#bef264]" : "bg-[#a855f7]"
-                }`}
+              <polygon
+                points="50,22 76,50 50,78 24,50"
+                stroke="#38bdf8"
+                strokeWidth="2.5"
+                fill="rgba(56, 189, 248, 0.15)"
               />
-            </span>
-            <span className="text-[12px] font-bold tracking-[0.24em] uppercase text-white">
-              {isComplete ? "WELCOME TO" : "LOADING"}
-            </span>
+              <path
+                d="M40 38 L40 62 M40 38 C48 38 52 42 52 50 C52 58 48 62 40 62"
+                stroke="#ffffff"
+                strokeWidth="3.5"
+                strokeLinecap="round"
+              />
+              <defs>
+                <linearGradient id="loaderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#c084fc" />
+                  <stop offset="100%" stopColor="#38bdf8" />
+                </linearGradient>
+              </defs>
+            </svg>
           </div>
 
-          {/* Right Counter & Progress Fill Box */}
-          <div className="flex items-center gap-3 z-10 pl-4">
-            <span className="font-mono text-[14px] font-semibold tracking-tight text-white tabular-nums">
-              {isComplete ? "DEVCORE" : `${progress}%`}
-            </span>
+          {/* Corner Tech Brackets */}
+          <div className="absolute -top-1 -left-1 w-3 h-3 border-t-2 border-l-2 border-cyan-400/70" />
+          <div className="absolute -top-1 -right-1 w-3 h-3 border-t-2 border-r-2 border-cyan-400/70" />
+          <div className="absolute -bottom-1 -left-1 w-3 h-3 border-b-2 border-l-2 border-violet-400/70" />
+          <div className="absolute -bottom-1 -right-1 w-3 h-3 border-b-2 border-r-2 border-violet-400/70" />
+        </div>
 
-            {/* Small Glowing Progress Box (seen in user reference) */}
-            <div className="relative w-4 h-4 rounded-[3px] bg-[#1a1a24] border border-white/20 overflow-hidden flex items-center justify-center">
-              <motion.div
-                className="absolute inset-0 bg-white"
-                style={{
-                  scaleY: progress / 100,
-                  transformOrigin: "bottom",
-                }}
-                transition={{ ease: "linear", duration: 0.08 }}
-              />
-              {isComplete && (
-                <svg
-                  className="w-3 h-3 text-black z-10"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <polyline points="3 8 7 12 13 4" />
-                </svg>
-              )}
-            </div>
-          </div>
+        {/* Counter Digits */}
+        <div className="flex items-baseline gap-2 mb-3">
+          <span className="font-mono text-4xl sm:text-5xl font-black tracking-tight text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.4)]">
+            {progress.toString().padStart(2, "0")}
+          </span>
+          <span className="font-mono text-sm sm:text-base text-cyan-400 font-bold">
+            %
+          </span>
+        </div>
+
+        {/* Laser Energy Progress Bar */}
+        <div className="w-56 sm:w-72 h-1.5 bg-white/10 rounded-full overflow-hidden relative mb-4 p-[1px] border border-white/10">
+          <motion.div
+            className="h-full rounded-full bg-gradient-to-r from-violet-600 via-indigo-500 to-cyan-400 relative"
+            style={{ width: `${progress}%` }}
+          >
+            {/* Glowing lead particle */}
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-white shadow-[0_0_10px_#ffffff]" />
+          </motion.div>
+        </div>
+
+        {/* Dynamic Telemetry Status Log */}
+        <div className="h-6 flex items-center justify-center">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={logIndex}
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -4 }}
+              transition={{ duration: 0.18 }}
+              className="font-mono text-[11px] sm:text-xs font-semibold tracking-[0.2em] text-neutral-400 flex items-center gap-2"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-ping" />
+              <span>{BOOT_LOGS[logIndex]}</span>
+            </motion.div>
+          </AnimatePresence>
         </div>
       </motion.div>
 
-      {/* Shimmer animation & Marquee CSS */}
-      <style jsx>{`
-        @keyframes marquee {
-          0% {
-            transform: translateX(0%);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
-        }
-        .animate-marquee {
-          display: flex;
-          width: 200%;
-          animation: marquee 20s linear infinite;
-        }
-        @keyframes shimmer {
-          0% {
-            background-position: 200% 0;
-          }
-          100% {
-            background-position: -200% 0;
-          }
-        }
-      `}</style>
+      {/* Center Laser Beam Seam during Reveal */}
+      <AnimatePresence>
+        {isRevealing && (
+          <motion.div
+            className="absolute top-1/2 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent -translate-y-1/2 z-40 pointer-events-none shadow-[0_0_20px_#38bdf8]"
+            initial={{ opacity: 1, scaleX: 1 }}
+            animate={{ opacity: 0, scaleX: 1.5 }}
+            transition={{ duration: 0.8 }}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
