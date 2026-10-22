@@ -26,10 +26,10 @@ const Char = ({
   start: number;
   end: number;
 }) => {
-  const y = useTransform(progress, [start, end], ['120%', '0%']);
-  const opacity = useTransform(progress, [start, end], [0, 1]);
-  const scaleY = useTransform(progress, [start, end], [2.3, 1]);
-  const scaleX = useTransform(progress, [start, end], [0.7, 1]);
+  const y = useTransform(progress, [start, end], ['25%', '0%']);
+  const opacity = useTransform(progress, [start, end], [0.85, 1]);
+  const scaleY = useTransform(progress, [start, end], [1.35, 1]);
+  const scaleX = useTransform(progress, [start, end], [0.85, 1]);
 
   return (
     <motion.span

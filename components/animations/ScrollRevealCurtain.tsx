@@ -45,7 +45,8 @@ export const ScrollRevealCurtain: React.FC<Props> = ({
 
         gsap.set(beneathRef.current, {
           transformOrigin: "50% 50%",
-          scale: 1,
+          scale: 0.96,
+          opacity: 0,
           rotateX: 0,
           z: 0,
         });
@@ -84,9 +85,21 @@ export const ScrollRevealCurtain: React.FC<Props> = ({
         });
 
       const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
-      const holdDuration = isMobile ? 0.35 : 0.08;
+      const holdDuration = isMobile ? 0.35 : 0.28;
       const curtainDuration = isMobile ? 0.55 : 0.75;
       const labelDelay = holdDuration + (curtainDuration * 0.6);
+
+      // Smooth crossfade entrance of beneath scene from the preceding section's fadeout
+      tl.to(
+        beneathRef.current,
+        {
+          opacity: 1,
+          scale: 1,
+          duration: Math.max(0.2, holdDuration * 0.7),
+          ease: "power2.out",
+        },
+        0
+      );
 
       // Hold to register the scene cleanly before curtain sweeps
       tl.to({}, { duration: holdDuration }, 0);

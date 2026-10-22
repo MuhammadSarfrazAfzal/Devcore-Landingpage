@@ -21,16 +21,16 @@ export default function Home() {
     <main className="relative">
       <FrameToFullscreen
         titleComponent={
-          <h1 className="text-2xl sm:text-4xl md:text-5xl font-semibold text-white mt-[2vh] md:mt-[4vh] px-2 text-center">
+          <h1 className="text-xl sm:text-3xl md:text-5xl font-semibold text-white mt-[1vh] md:mt-[3vh] px-2 text-center">
             Crafting digital experiences with <br />
             <ScrollFloat
-              stagger={0.8}
+              stagger={0.6}
               textClassName="text-white font-bold tracking-tight inline-block"
               style={{
-                fontSize: "clamp(2.5rem, 7.5vw, 9.5rem)",
-                marginTop: "1.25rem"
+                fontSize: "clamp(2.2rem, 7.5vw, 9.5rem)",
+                marginTop: "0.75rem"
               }}
-              scrollRange={[0.05, 0.48]}
+              scrollRange={[0.0, 0.16]}
             >
               DEVCORE
             </ScrollFloat>

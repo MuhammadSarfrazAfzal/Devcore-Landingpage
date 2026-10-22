@@ -96,6 +96,22 @@ const FlowArt: React.FC<FlowArtProps> = ({
         const inner = section.querySelector<HTMLElement>('.flow-art-container');
         if (!inner) return;
 
+        if (i === 0 && isMobile) {
+          gsap.set(inner, { y: 60, opacity: 0 });
+          const tween = gsap.to(inner, {
+            y: 0,
+            opacity: 1,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: section,
+              start: 'top 95%',
+              end: 'top 35%',
+              scrub: 0.6,
+            },
+          });
+          if (tween.scrollTrigger) triggers.push(tween.scrollTrigger);
+        }
+
         if (i > 0) {
           if (isMobile) {
             gsap.set(inner, { y: 50, opacity: 0.85 });
