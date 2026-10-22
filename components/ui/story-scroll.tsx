@@ -98,8 +98,8 @@ export const FlowArt: React.FC<FlowArtProps> = ({
       // 2. Single Unified GSAP Timeline for all stacked cards
       // Pinned stage with generous scroll distance: no overlap, no bleed-through, silky smooth
       const scrollDistance = isMobile
-        ? `+=${cards.length * 85}%`
-        : `+=${cards.length * 115}%`;
+        ? `+=${cards.length * 120}%`
+        : `+=${cards.length * 145}%`;
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -108,7 +108,7 @@ export const FlowArt: React.FC<FlowArtProps> = ({
           end: scrollDistance,
           pin: stageRef.current,
           pinSpacing: true,
-          scrub: isMobile ? 0.6 : 0.9, // Luxurious inertia damping
+          scrub: isMobile ? 0.8 : 1.0, // Luxurious inertia damping
           anticipatePin: 1,
           invalidateOnRefresh: true,
         },

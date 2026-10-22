@@ -35,14 +35,14 @@ export const HeroParallax = ({
   const ref = React.useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start start", "end start"],
+    offset: ["start 0.85", "end start"],
   });
 
   const springConfig = isMobile
-    ? { stiffness: 90, damping: 20 }
-    : { stiffness: 220, damping: 28 };
+    ? { stiffness: 65, damping: 20 }
+    : { stiffness: 120, damping: 24 };
 
-  const travelDist = isMobile ? 380 : 1000;
+  const travelDist = isMobile ? 480 : 1100;
 
   const translateX = useSpring(
     useTransform(scrollYProgress, [0, 1], [0, travelDist]),
@@ -53,19 +53,19 @@ export const HeroParallax = ({
     springConfig
   );
   const rotateX = useSpring(
-    useTransform(scrollYProgress, [0, 0.2], [isMobile ? 8 : 15, 0]),
+    useTransform(scrollYProgress, [0, 0.6], [isMobile ? 4 : 14, 0]),
     springConfig
   );
   const opacity = useSpring(
-    useTransform(scrollYProgress, [0, 0.2], [0.2, 1]),
+    useTransform(scrollYProgress, [0, 0.3], [isMobile ? 0.85 : 0.4, 1]),
     springConfig
   );
   const rotateZ = useSpring(
-    useTransform(scrollYProgress, [0, 0.2], [isMobile ? 10 : 20, 0]),
+    useTransform(scrollYProgress, [0, 0.6], [isMobile ? 3 : 12, 0]),
     springConfig
   );
   const translateY = useSpring(
-    useTransform(scrollYProgress, [0, 0.2], [isMobile ? -350 : -700, isMobile ? 250 : 500]),
+    useTransform(scrollYProgress, [0, 0.85], [isMobile ? 0 : -450, isMobile ? 120 : 300]),
     springConfig
   );
 
@@ -76,7 +76,7 @@ export const HeroParallax = ({
   return (
     <div
       ref={ref}
-      className="h-[220vh] md:h-[300vh] pt-20 md:pt-40 pb-0 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
+      className="h-[140vh] md:h-[260vh] pt-12 md:pt-32 pb-0 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
     >
       <Header />
       <motion.div

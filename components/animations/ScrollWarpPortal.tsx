@@ -87,10 +87,11 @@ export const ScrollWarpPortal: React.FC<Props> = ({
           trigger: sectionRef.current,
           start: "top top",
           end: scrollDistance,
-          scrub: 0.35,
+          scrub: 0.75,
           pin: stageRef.current,
           pinSpacing: true,
           anticipatePin: 1,
+          invalidateOnRefresh: true,
         },
       });
 

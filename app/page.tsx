@@ -44,7 +44,7 @@ export default function Home() {
         <ScrollWarpPortal
           voidColor="#050505"
           accent="#c8a882"
-          scrollDistance="+=110%"
+          scrollDistance="+=140%"
           label={
             <div className="flex flex-col items-center gap-4">
               <span className="text-xs font-bold uppercase tracking-[0.4em] opacity-70">
@@ -72,7 +72,7 @@ export default function Home() {
           voidColor="#050505"
           topColor="#0f0f0f"
           bottomColor="#1a1a1a"
-          scrollDistance="+=130%"
+          scrollDistance="+=150%"
           label={
             <div className="flex flex-col items-center gap-4">
               <span className="text-xs font-bold uppercase tracking-[0.4em] opacity-70">

@@ -14,8 +14,8 @@ export default function ScrollMorphSection() {
   });
 
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 120,
-    damping: 30,
+    stiffness: 75,
+    damping: 22,
     mass: 0.3,
   });
 
@@ -29,7 +29,7 @@ export default function ScrollMorphSection() {
   return (
     <section
       ref={wrapperRef}
-      className="relative w-full h-[450vh]"
+      className="relative w-full h-[220vh] md:h-[380vh]"
       style={{ willChange: "transform" }}
     >
       <div className="sticky top-0 w-full h-screen overflow-hidden bg-[#FAFAFA]">

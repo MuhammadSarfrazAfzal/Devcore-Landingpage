@@ -75,8 +75,8 @@ export const FrameToFullscreen: React.FC<Props> = ({ titleComponent, children })
           scrollTrigger: {
             trigger: sectionRef.current,
             start: "top top",
-            end: isMobile ? "+=150%" : "+=190%",
-            scrub: isMobile ? 0.6 : 0.8, // Silky smooth scroll tracking with luxurious inertia
+            end: isMobile ? "+=160%" : "+=200%",
+            scrub: isMobile ? 0.75 : 0.85, // Silky smooth scroll tracking with luxurious inertia
             pin: stageRef.current,
             pinSpacing: true,
             anticipatePin: 1,

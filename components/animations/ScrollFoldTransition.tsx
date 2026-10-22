@@ -79,10 +79,11 @@ export const ScrollFoldTransition: React.FC<Props> = ({
           trigger: sectionRef.current,
           start: "top top",
           end: scrollDistance,
-          scrub: 0.35,
+          scrub: 0.65,
           pin: stageRef.current,
           pinSpacing: true,
           anticipatePin: 1,
+          invalidateOnRefresh: true,
         },
       });
 
@@ -177,8 +178,7 @@ export const ScrollFoldTransition: React.FC<Props> = ({
   return (
     <section
       ref={sectionRef}
-      className="relative w-full"
-      style={{ height: `${sectionVh}vh` }}
+      className="relative w-full min-h-screen"
       aria-label="Page fold transition"
     >
       <div
