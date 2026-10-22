@@ -149,7 +149,7 @@ export const Header = () => {
               "linear-gradient(90deg, transparent, rgba(167,139,250,0.9))",
           }}
         />
-        <span className="font-medium">Chapter 02 — Selected Work</span>
+        <span className="font-medium">Chapter 01 — Selected Work</span>
       </div>
 
       {/* Title */}

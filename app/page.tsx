@@ -40,44 +40,15 @@ export default function Home() {
         <VSCodePortfolio />
       </FrameToFullscreen>
 
-      {/* Desktop Only: 3D Spline Scene & Curtain Transition (completely removed on mobile) */}
-      <div className="hidden md:block">
-        <ScrollRevealCurtain
-          curtainColor="#fd5200"
-          scrollDistance="+=120%"
-          label={
-            <div className="flex flex-col items-center gap-4">
-              <span className="text-xs font-bold uppercase tracking-[0.3em] opacity-80">
-                Chapter 01
-              </span>
-              <span className="block text-[clamp(2.5rem,9vw,8rem)] font-bold uppercase leading-[0.9] tracking-tight">
-                About
-                <br />
-                DevCore
-              </span>
-            </div>
-          }
-          beneath={
-            <section className="relative w-full h-screen bg-[#080808] overflow-hidden">
-              <SplineSceneBasic />
-            </section>
-          }
-        />
-      </div>
-
-      <div id="about">
-        <StoryScrollDemo />
-      </div>
-
       <div id="showcase">
         <ScrollWarpPortal
           voidColor="#050505"
           accent="#c8a882"
-          scrollDistance="+=170%"
+          scrollDistance="+=110%"
           label={
             <div className="flex flex-col items-center gap-4">
               <span className="text-xs font-bold uppercase tracking-[0.4em] opacity-70">
-                Chapter 02
+                Chapter 01
               </span>
               <span className="block text-[clamp(2.5rem,9vw,8rem)] font-bold uppercase leading-[0.9] tracking-tight">
                 The
@@ -101,11 +72,11 @@ export default function Home() {
           voidColor="#050505"
           topColor="#0f0f0f"
           bottomColor="#1a1a1a"
-          scrollDistance="+=180%"
+          scrollDistance="+=130%"
           label={
             <div className="flex flex-col items-center gap-4">
               <span className="text-xs font-bold uppercase tracking-[0.4em] opacity-70">
-                Chapter 03
+                Chapter 02
               </span>
               <span className="text-[clamp(2.5rem,9vw,8rem)] font-bold uppercase leading-[0.9] tracking-tight flex flex-col items-center" style={{ whiteSpace: "nowrap" }}>
                 <span>DESIGNED</span>
@@ -159,6 +130,35 @@ export default function Home() {
       </section>
 
       <ZoomParallaxDemo />
+
+      {/* Desktop Only: 3D Spline Scene & Curtain Transition (completely removed on mobile) */}
+      <div className="hidden md:block">
+        <ScrollRevealCurtain
+          curtainColor="#fd5200"
+          scrollDistance="+=120%"
+          label={
+            <div className="flex flex-col items-center gap-4">
+              <span className="text-xs font-bold uppercase tracking-[0.3em] opacity-80">
+                Chapter 03
+              </span>
+              <span className="block text-[clamp(2.5rem,9vw,8rem)] font-bold uppercase leading-[0.9] tracking-tight">
+                About
+                <br />
+                DevCore
+              </span>
+            </div>
+          }
+          beneath={
+            <section className="relative w-full h-screen bg-[#080808] overflow-hidden">
+              <SplineSceneBasic />
+            </section>
+          }
+        />
+      </div>
+
+      <div id="about">
+        <StoryScrollDemo />
+      </div>
 
       <section id="contact" className="w-full relative flex flex-col items-center justify-center bg-black px-4 sm:px-6 py-12 sm:py-20 md:py-28 text-center overflow-hidden">
         {/* Subtle Ambient Cosmic Glow */}
