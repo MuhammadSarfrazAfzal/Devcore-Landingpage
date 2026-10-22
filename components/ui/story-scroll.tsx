@@ -26,34 +26,26 @@ export const FlowSection: React.FC<FlowSectionProps> = ({
   children,
   'aria-label': ariaLabel,
 }) => (
-  <section
+  <div
     id={id}
-    data-flow-section
+    data-flow-card
     aria-label={ariaLabel}
     className={cx(
-      'relative w-full min-h-[175vh] sm:min-h-[190vh] md:min-h-[205vh] last:min-h-screen',
+      'absolute inset-0 w-full h-full flex flex-col justify-between overflow-hidden will-change-transform',
+      'shadow-[0_-20px_50px_-10px_rgba(0,0,0,0.7)]',
       className
     )}
+    style={{
+      paddingLeft: 'clamp(1.25rem, 6vw, 9rem)',
+      paddingRight: 'clamp(1.25rem, 6vw, 9rem)',
+      paddingTop: 'clamp(2rem, 5vh, 5.5rem)',
+      paddingBottom: 'clamp(2rem, 5vh, 5.5rem)',
+      rowGap: 'clamp(1rem, 2.5vh, 2.5rem)',
+      ...style,
+    }}
   >
-    <div
-      data-flow-inner
-      className={cx(
-        'flow-art-container relative flex h-screen w-full flex-col justify-between overflow-hidden',
-        'will-change-transform shadow-[0_-25px_60px_-10px_rgba(0,0,0,0.65)]',
-      )}
-      style={{
-        transformOrigin: 'bottom left',
-        paddingLeft: 'clamp(1.25rem, 6vw, 9rem)',
-        paddingRight: 'clamp(1.25rem, 6vw, 9rem)',
-        paddingTop: 'clamp(2rem, 5vh, 5.5rem)',
-        paddingBottom: 'clamp(2rem, 5vh, 5.5rem)',
-        rowGap: 'clamp(1rem, 2.5vh, 2.5rem)',
-        ...style,
-      }}
-    >
-      {children}
-    </div>
-  </section>
+    {children}
+  </div>
 );
 
 export interface FlowArtProps {
@@ -64,12 +56,13 @@ export interface FlowArtProps {
 
 const childCount = (children: React.ReactNode) => React.Children.count(children);
 
-const FlowArt: React.FC<FlowArtProps> = ({
+export const FlowArt: React.FC<FlowArtProps> = ({
   children,
   className,
   'aria-label': ariaLabel = 'Story scroll',
 }) => {
-  const containerRef = useRef<HTMLElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
   const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
@@ -82,123 +75,100 @@ const FlowArt: React.FC<FlowArtProps> = ({
 
   useGSAP(
     () => {
-      if (!containerRef.current || reducedMotion) return;
+      if (!containerRef.current || !stageRef.current || reducedMotion) return;
 
-      const sections = Array.from(
-        containerRef.current.querySelectorAll<HTMLElement>('[data-flow-section]'),
+      const cards = Array.from(
+        stageRef.current.querySelectorAll<HTMLElement>('[data-flow-card]'),
       );
-      if (sections.length === 0) return;
+      if (cards.length === 0) return;
 
-      const triggers: ScrollTrigger[] = [];
       const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
-      sections.forEach((section, i) => {
-        gsap.set(section, { zIndex: i + 1 });
-
-        const inner = section.querySelector<HTMLElement>('.flow-art-container');
-        if (!inner) return;
-
-        const nextSection = sections[i + 1];
-
-        // 1. PINNING: Pin each section to stay stationary on screen during its dwell + transition
-        if (i < sections.length - 1) {
-          triggers.push(
-            ScrollTrigger.create({
-              trigger: section,
-              start: 'top top',
-              end: () => `+=${section.offsetHeight}`,
-              pin: true,
-              pinSpacing: false,
-              invalidateOnRefresh: true,
-            }),
-          );
-        }
-
-        // 2. ENTRY ANIMATION: Smooth stacked card entrance with gentle rotation and inertia damping
-        if (i > 0) {
-          if (isMobile) {
-            // Mobile: smooth vertical slide with subtle scale & opacity ramp
-            gsap.set(inner, {
-              yPercent: 40,
-              scale: 0.95,
-              opacity: 0.75,
-            });
-
-            const tween = gsap.to(inner, {
-              yPercent: 0,
-              scale: 1,
-              opacity: 1,
-              ease: 'power1.out',
-              scrollTrigger: {
-                trigger: section,
-                start: 'top bottom',
-                end: 'top top',
-                scrub: 0.8,
-                invalidateOnRefresh: true,
-              },
-            });
-            if (tween.scrollTrigger) triggers.push(tween.scrollTrigger);
-          } else {
-            // Desktop: elegant editorial rotation (14deg) + scale + smooth glide
-            gsap.set(inner, {
-              rotation: 14,
-              scale: 0.94,
-              yPercent: 30,
-              transformOrigin: 'bottom left',
-            });
-
-            const tween = gsap.to(inner, {
-              rotation: 0,
-              scale: 1,
-              yPercent: 0,
-              ease: 'power1.out',
-              scrollTrigger: {
-                trigger: section,
-                start: 'top bottom',
-                end: 'top top',
-                scrub: 1.2,
-                invalidateOnRefresh: true,
-              },
-            });
-            if (tween.scrollTrigger) triggers.push(tween.scrollTrigger);
-          }
-        }
-
-        // 3. EXIT ANIMATION: When next section glides in over this one, subtly dim and scale this one back
-        if (nextSection) {
-          const exitTween = gsap.to(inner, {
-            scale: 0.96,
-            opacity: 0.45,
-            ease: 'power1.out',
-            scrollTrigger: {
-              trigger: nextSection,
-              start: 'top bottom',
-              end: 'top top',
-              scrub: isMobile ? 0.8 : 1.2,
-              invalidateOnRefresh: true,
-            },
-          });
-          if (exitTween.scrollTrigger) triggers.push(exitTween.scrollTrigger);
-        }
+      // 1. Initial State: Card 0 is full screen; subsequent cards are parked below viewport
+      cards.forEach((card, i) => {
+        gsap.set(card, {
+          zIndex: (i + 1) * 10,
+          yPercent: i === 0 ? 0 : 100,
+          scale: 1,
+          filter: 'brightness(1)',
+          force3D: true,
+        });
       });
 
-      ScrollTrigger.refresh();
+      // 2. Single Unified GSAP Timeline for all stacked cards
+      // Pinned stage with generous scroll distance: no overlap, no bleed-through, silky smooth
+      const scrollDistance = isMobile
+        ? `+=${cards.length * 85}%`
+        : `+=${cards.length * 115}%`;
 
-      return () => {
-        triggers.forEach((t) => t.kill());
-      };
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top top',
+          end: scrollDistance,
+          pin: stageRef.current,
+          pinSpacing: true,
+          scrub: isMobile ? 0.6 : 0.9, // Luxurious inertia damping
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+        },
+      });
+
+      // Initial reading dwell time for Card 0 (About DevCore)
+      tl.to({}, { duration: 0.8 });
+
+      // Sequentially slide each card up cleanly over the previous one
+      for (let i = 1; i < cards.length; i++) {
+        const prevCard = cards[i - 1];
+        const currentCard = cards[i];
+
+        // Slide incoming card cleanly from bottom (yPercent: 100 -> 0)
+        tl.to(
+          currentCard,
+          {
+            yPercent: 0,
+            duration: 1.0,
+            ease: 'power2.inOut',
+            force3D: true,
+          },
+          `+=0`
+        );
+
+        // Previous card smoothly scales back and dims into background for cinematic depth
+        tl.to(
+          prevCard,
+          {
+            scale: 0.94,
+            filter: 'brightness(0.6)',
+            duration: 1.0,
+            ease: 'power2.inOut',
+            force3D: true,
+          },
+          `<`
+        );
+
+        // Reading dwell time: card stays stationary & 100% visible so user can read comfortably
+        tl.to({}, { duration: i === cards.length - 1 ? 0.8 : 1.1 });
+      }
+
+      ScrollTrigger.refresh();
     },
     { scope: containerRef, dependencies: [childCount(children), reducedMotion] },
   );
 
   return (
-    <main
+    <div
       ref={containerRef}
       aria-label={ariaLabel}
-      className={cx('w-full overflow-x-hidden', className)}
+      className={cx('relative w-full min-h-screen overflow-hidden', className)}
     >
-      {children}
-    </main>
+      <div
+        ref={stageRef}
+        className="relative w-full h-screen overflow-hidden bg-black"
+      >
+        {children}
+      </div>
+    </div>
   );
 };
 
