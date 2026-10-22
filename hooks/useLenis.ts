@@ -17,6 +17,17 @@ export function useLenis() {
       typeof window !== "undefined" &&
       ("ontouchstart" in window || navigator.maxTouchPoints > 0 || window.innerWidth < 768);
 
+    if (typeof window !== "undefined" && "scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+
+    const onBeforeUnload = () => {
+      window.scrollTo(0, 0);
+    };
+    if (typeof window !== "undefined") {
+      window.addEventListener("beforeunload", onBeforeUnload);
+    }
+
     const lenis = new Lenis({
       lerp: isTouch ? 0.12 : 0.08,
       orientation: "vertical",
@@ -53,6 +64,9 @@ export function useLenis() {
     gsap.ticker.lagSmoothing(500, 33);
 
     return () => {
+      if (typeof window !== "undefined") {
+        window.removeEventListener("beforeunload", onBeforeUnload);
+      }
       if (scrollTimeout) clearTimeout(scrollTimeout);
       if (typeof document !== "undefined") {
         document.body.classList.remove("is-scrolling");

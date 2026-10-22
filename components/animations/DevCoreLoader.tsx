@@ -3,6 +3,7 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { getLenis } from "@/hooks/useLenis";
+import { ScrollTrigger } from "@/lib/gsap";
 
 const BOOT_LOGS = [
   "INITIALIZING DEVCORE ARCHITECTURE",
@@ -20,14 +21,30 @@ export default function DevCoreLoader() {
   const [isExited, setIsExited] = useState(false);
   const hasStartedRef = useRef(false);
 
+  const resetViewToTop = useCallback(() => {
+    if (typeof window === "undefined") return;
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    const lenis = getLenis();
+    lenis?.scrollTo(0, { immediate: true });
+    ScrollTrigger.refresh();
+  }, []);
+
   const triggerOpen = useCallback(() => {
     setIsRevealing(true);
+    // Explicitly reset view to the start of the website upon loading completion
+    resetViewToTop();
+
     document.body.style.overflow = "";
     getLenis()?.start();
+    ScrollTrigger.refresh();
+
     setTimeout(() => {
       setIsExited(true);
+      resetViewToTop();
     }, 1100);
-  }, []);
+  }, [resetViewToTop]);
 
   const handleSkip = useCallback(() => {
     setProgress(100);
@@ -39,11 +56,25 @@ export default function DevCoreLoader() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
+    // Prevent browser from restoring scrolled position on refresh
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+
+    // Clear hash on initial load if present so browser does not jump down
+    if (window.location.hash) {
+      window.history.replaceState(null, "", window.location.pathname + window.location.search);
+    }
+
+    // Ensure we start at top=0 before/during loading
+    resetViewToTop();
+
     // Lock scrolling during intro
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     const lenis = getLenis();
     lenis?.stop();
+    lenis?.scrollTo(0, { immediate: true });
 
     // Listen for ESC or Space key to skip
     const onKeyDown = (e: KeyboardEvent) => {
