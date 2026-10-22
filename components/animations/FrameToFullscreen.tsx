@@ -75,16 +75,17 @@ export const FrameToFullscreen: React.FC<Props> = ({ titleComponent, children })
           scrollTrigger: {
             trigger: sectionRef.current,
             start: "top top",
-            end: isMobile ? "+=120%" : "+=150%",
-            scrub: 0.35, // Snappy, buttery smooth tracking without sluggish lag
+            end: isMobile ? "+=150%" : "+=190%",
+            scrub: isMobile ? 0.6 : 0.8, // Silky smooth scroll tracking with luxurious inertia
             pin: stageRef.current,
             pinSpacing: true,
             anticipatePin: 1,
+            invalidateOnRefresh: true,
           },
         });
 
         // =========================================================
-        // Phase 1 (0.00 → 0.40): Fast, silky expansion
+        // Phase 1 (0.00 → 0.32): Silky card expansion into fullscreen
         // =========================================================
 
         // Title floats up gently and fades out cleanly
@@ -92,16 +93,16 @@ export const FrameToFullscreen: React.FC<Props> = ({ titleComponent, children })
           tl.to(
             titleRef.current,
             {
-              y: -35,
+              y: -40,
               opacity: 0,
-              duration: 0.22,
+              duration: 0.24,
               ease: "power2.out",
             },
             0
           );
         }
 
-        // Frame smoothly unfolds and expands into fullscreen (GPU-accelerated)
+        // Frame smoothly unfolds and expands into fullscreen
         tl.to(
           frameRef.current,
           {
@@ -110,8 +111,8 @@ export const FrameToFullscreen: React.FC<Props> = ({ titleComponent, children })
             scaleY: 1,
             y: 0,
             borderRadius: 0,
-            duration: 0.40,
-            ease: "power1.inOut",
+            duration: 0.32,
+            ease: "power2.out",
           },
           0
         );
@@ -120,31 +121,32 @@ export const FrameToFullscreen: React.FC<Props> = ({ titleComponent, children })
           innerRef.current,
           {
             borderRadius: 0,
-            duration: 0.40,
-            ease: "power1.inOut",
+            duration: 0.32,
+            ease: "power2.out",
           },
           0
         );
 
         // =========================================================
-        // Phase 2 (0.40 → 0.65): Fullscreen viewing hold
+        // Phase 2 (0.32 → 0.68): Stable, comfortable fullscreen exploration
         // =========================================================
-        tl.to({}, { duration: 0.25 }, 0.40);
+        tl.to({}, { duration: 0.36 }, 0.32);
 
         // =========================================================
-        // Phase 3 (0.65 → 1.00): Silky fadeout to next section
+        // Phase 3 (0.68 → 1.00): Cinematic hyperspace blend into next section
         // =========================================================
+        // Pushes forward into camera with gentle motion blur & dissolves seamlessly into Chapter 01
         tl.to(
           frameRef.current,
           {
             opacity: 0,
-            scaleX: isMobile ? 0.96 : 0.94,
-            scaleY: isMobile ? 0.96 : 0.94,
-            y: isMobile ? -12 : -20,
-            duration: 0.35,
-            ease: "power1.inOut",
+            scaleX: isMobile ? 1.05 : 1.08,
+            scaleY: isMobile ? 1.05 : 1.08,
+            filter: "blur(6px) brightness(0.75)",
+            duration: 0.32,
+            ease: "power2.inOut",
           },
-          0.65
+          0.68
         );
       }, sectionRef);
     };
@@ -172,7 +174,7 @@ export const FrameToFullscreen: React.FC<Props> = ({ titleComponent, children })
     <ContainerScrollContext.Provider value={scrollYProgress}>
       <section
         ref={sectionRef}
-        className="relative w-full h-[220vh] md:h-[250vh] bg-black"
+        className="relative w-full min-h-screen bg-black"
       >
         <div
           ref={stageRef}

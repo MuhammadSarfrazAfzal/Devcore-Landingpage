@@ -40,11 +40,11 @@ const projects: Project[] = [
     image: "/Proofstack-1.png",
   },
   {
-    title: "CyberShield India",
+    title: "CyberShield",
     description:
       "AI + blockchain digital forensics platform for detecting and anchoring tamper-proof evidence.",
     year: "2025",
-    link: "https://github.com/your-username/cybershield-india",
+    link: "https://github.com/your-username/cybershield",
     image: "/cybershield-1.png",
   },
 ];

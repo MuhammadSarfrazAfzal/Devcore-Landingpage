@@ -49,7 +49,7 @@ The single route at `/` is composed of these scenes, in order, all rendered as s
    Pinned section where text warps through a portal effect.
 
 5. **`HeroParallaxDemo` → `HeroParallax`**
-   Three horizontally-translating rows of project cards driven by `useScroll` + `useSpring`. Real project thumbnails (KodaiRateIQ, ProofStack, CyberShield India, etc.) link out to live deploys.
+   Three horizontally-translating rows of project cards driven by `useScroll` + `useSpring`. Real project thumbnails (KodaiRateIQ, ProofStack, CyberShield, etc.) link out to live deploys.
 
 6. **`ScrollMorphSection` → `ScrollMorphHero`**
    Scatter → line → circle → bottom-strip flip-card morph animation cycling through every project image.

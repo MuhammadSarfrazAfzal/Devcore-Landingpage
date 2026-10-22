@@ -239,8 +239,7 @@ export const ScrollWarpPortal: React.FC<Props> = ({
   return (
     <section
       ref={sectionRef}
-      className="relative w-full"
-      style={{ height: `${sectionVh}vh` }}
+      className="relative w-full min-h-screen"
       aria-label="Warp transition"
     >
       <div

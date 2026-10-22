@@ -19,8 +19,8 @@ export const products = [
     objectPosition: "left top",
   },
   {
-    title: "CyberShield India",
-    link: "https://github.com/your-username/cybershield-india",
+    title: "CyberShield",
+    link: "https://github.com/your-username/cybershield",
     thumbnail: "/cybershield-1.avif",
     objectPosition: "left top",
   },

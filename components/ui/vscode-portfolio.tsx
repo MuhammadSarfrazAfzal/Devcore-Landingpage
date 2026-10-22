@@ -350,7 +350,7 @@ const featuredProjects: Project[] = [
     },
   },
   {
-    title: "CyberShield India",
+    title: "CyberShield",
     year: "2025",
     tag: "Open Source",
     featured: true,
@@ -359,7 +359,7 @@ const featuredProjects: Project[] = [
     artwork: "linear-gradient(180deg, #042f2e 0%, #134e4a 40%, #7c3aed 100%)",
     image: "/cybershield-1.png",
     overview:
-      "CyberShield India is a law-enforcement-grade digital forensics platform that detects AI-generated media, traces digital footprints across surfaces, and anchors tamper-proof evidence hashes onto the Polygon blockchain. Built for investigators who need their findings to hold up in a courtroom — chain of custody, audit trail, and cryptographic proof, all baked in.",
+      "CyberShield is a law-enforcement-grade digital forensics platform that detects AI-generated media, traces digital footprints across surfaces, and anchors tamper-proof evidence hashes onto the Polygon blockchain. Built for investigators who need their findings to hold up in a courtroom — chain of custody, audit trail, and cryptographic proof, all baked in.",
     features: [
       "Deepfake & AI-generated media detection",
       "Cross-platform digital footprint tracing",
@@ -369,7 +369,7 @@ const featuredProjects: Project[] = [
       "Investigator-grade case dashboard",
     ],
     links: {
-      github: "https://github.com/your-username/cybershield-india",
+      github: "https://github.com/your-username/cybershield",
       linkedin: "https://www.linkedin.com/company/your-company",
     },
   },
@@ -478,9 +478,12 @@ export const VSCodePortfolio: React.FC = () => {
             </div>
 
             {/* Editor body */}
-            <div className="flex-1 overflow-auto px-4 sm:px-8 md:px-20 pt-6 md:pt-20 pb-16 min-w-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-              <p className="text-base sm:text-[22px] text-[#cfcfcf] ml-2 sm:ml-6 mt-3 mb-1">Hi, we&apos;re</p>
-              <h1 className="text-[clamp(2.8rem,7.5vw,104px)] leading-[1.05] font-bold tracking-tight ml-2 sm:ml-6 mb-4">
+            <div
+              className="flex-1 overflow-auto px-4 sm:px-8 md:px-16 pt-4 sm:pt-6 md:pt-8 pb-8 min-w-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+              style={{ overscrollBehavior: "auto" }}
+            >
+              <p className="text-sm sm:text-base md:text-[18px] text-[#cfcfcf] ml-2 sm:ml-6 mt-1 mb-1">Hi, we&apos;re</p>
+              <h1 className="text-[clamp(2.4rem,6.2vw,92px)] leading-[1.05] font-bold tracking-tight ml-2 sm:ml-6 mb-3">
                 <TextType
                   as="span"
                   text="DEVCORE"
@@ -514,18 +517,18 @@ export const VSCodePortfolio: React.FC = () => {
                   }
                 />
               </h1>
-              <div className="flex flex-wrap items-center text-xs sm:text-[15px] text-[#cfcfcf] ml-2 sm:ml-6 mb-2">
+              <div className="flex flex-wrap items-center text-xs sm:text-[14px] text-[#cfcfcf] ml-2 sm:ml-6 mb-2">
                 <svg viewBox="0 0 16 16" className="w-4 h-4 mr-1.5 text-[#a78bfa] shrink-0" fill="currentColor"><path d="M4 1h6l3 3v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1Z" /></svg>
                 <span className="text-[#a78bfa]">DEVCORE / DIGITAL ENGINEERING</span>
                 <span className="text-[#6f6f6f] mx-2">•</span>
                 <span>Software Development & Digital Experiences</span>
               </div>
-              <p className="text-xs sm:text-[15px] text-[#9a9a9a] max-w-[640px] ml-2 sm:ml-6 mb-8 sm:mb-10 leading-relaxed">
+              <p className="text-xs sm:text-[14px] text-[#9a9a9a] max-w-[640px] ml-2 sm:ml-6 mb-4 sm:mb-6 leading-relaxed">
                 DevCore engineers high-performance web applications and immersive digital experiences for ambitious businesses. We combine thoughtful design, reliable engineering, and modern technology to turn ideas into impactful digital products.
               </p>
 
               {/* Split View: Code + Live 3D WebGL Canvas */}
-              <div className="mb-8 sm:mb-12 max-w-[960px] mx-2 sm:mx-6">
+              <div className="mb-5 sm:mb-8 max-w-[960px] mx-2 sm:mx-6">
                 {/* Mode Selector Tabs */}
                 <div className="flex items-center justify-between mb-3 px-1">
                   <div className="flex items-center gap-1.5 p-1 rounded-lg bg-white/[0.04] border border-white/[0.08] backdrop-blur-sm">
@@ -630,7 +633,7 @@ export const VSCodePortfolio: React.FC = () => {
 
               {/* Buttons */}
               <div
-                className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-7 mb-16 sm:mb-24 mt-2"
+                className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-7 mb-8 sm:mb-10 mt-1"
               >
                 <ButtonCta
                   className="min-w-[200px]"
