@@ -12,9 +12,9 @@ export default function StoryScrollDemo() {
         style={{ backgroundColor: '#fd5200', color: '#fff' }}
       >
         <p className="text-xs font-bold uppercase tracking-[0.2em]">01 — ABOUT DEVCORE</p>
-        <hr className="my-[2vw] border-none border-t border-black opacity-100" />
+        <hr className="my-[1.5vw] border-none border-t border-black opacity-100" />
         <div>
-          <h1 className="text-[clamp(2.5rem,8.5vw,9rem)] font-bold leading-[0.9] uppercase tracking-tight">
+          <h1 className="text-[clamp(2.2rem,6.8vw,7.5rem)] font-bold leading-[0.92] uppercase tracking-tight">
             ENGINEERING
             <br />
             IDEAS INTO
@@ -22,11 +22,11 @@ export default function StoryScrollDemo() {
             REALITY
           </h1>
         </div>
-        <hr className="my-[2vw] border-none border-t border-black opacity-100" />
-        <p className="mt-auto max-w-[58ch] text-[clamp(1rem,2vw,1.75rem)] font-normal leading-relaxed">
+        <hr className="my-[1.5vw] border-none border-t border-black opacity-100" />
+        <p className="mt-auto max-w-[58ch] text-[clamp(1rem,1.8vw,1.5rem)] font-normal leading-relaxed">
           DevCore is a software development company focused on building meaningful digital products. We bring together software engineering, modern interface design, and interactive technologies to create experiences that look exceptional and work reliably.
         </p>
-        <p className="max-w-[58ch] text-[clamp(0.95rem,1.5vw,1.3rem)] opacity-90 leading-relaxed">
+        <p className="max-w-[58ch] text-[clamp(0.95rem,1.4vw,1.25rem)] opacity-90 leading-relaxed">
           From responsive websites to full-stack applications and immersive 3D experiences, our approach combines technical precision with practical business thinking.
         </p>
       </FlowSection>
@@ -38,9 +38,9 @@ export default function StoryScrollDemo() {
         style={{ backgroundColor: '#000', color: '#fff' }}
       >
         <p className="text-xs font-bold uppercase tracking-[0.2em]">02 — SERVICES</p>
-        <hr className="my-[2vw] border-none border-t border-white/60" />
+        <hr className="my-[1.5vw] border-none border-t border-white/60" />
         <div>
-          <h2 className="text-[clamp(2.5rem,8.5vw,9rem)] font-bold leading-[0.9] uppercase tracking-tight">
+          <h2 className="text-[clamp(2.2rem,6.8vw,7.5rem)] font-bold leading-[0.92] uppercase tracking-tight">
             SOLUTIONS
             <br />
             THAT
@@ -48,8 +48,8 @@ export default function StoryScrollDemo() {
             SCALE
           </h2>
         </div>
-        <hr className="my-[2vw] border-none border-t border-white/60" />
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-6 text-left">
+        <hr className="my-[1.5vw] border-none border-t border-white/60" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-4 sm:gap-y-6 text-left">
           <div>
             <p className="text-xs font-bold uppercase tracking-wider text-[#bef264] mb-1">
               01 — Web Development
@@ -108,9 +108,9 @@ export default function StoryScrollDemo() {
         style={{ backgroundColor: '#F5F0E8', color: '#000' }}
       >
         <p className="text-xs font-bold uppercase tracking-[0.2em]">03 — WORKING PROCESS</p>
-        <hr className="my-[2vw] border-none border-t border-black/60" />
+        <hr className="my-[1.5vw] border-none border-t border-black/60" />
         <div>
-          <h2 className="text-[clamp(2.5rem,8.5vw,9rem)] font-bold leading-[0.9] uppercase tracking-tight">
+          <h2 className="text-[clamp(2.2rem,6.8vw,7.5rem)] font-bold leading-[0.92] uppercase tracking-tight">
             DISCOVER.
             <br />
             DESIGN.
@@ -120,8 +120,8 @@ export default function StoryScrollDemo() {
             DELIVER.
           </h2>
         </div>
-        <hr className="my-[2vw] border-none border-t border-black/60" />
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 text-left">
+        <hr className="my-[1.5vw] border-none border-t border-black/60" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 text-left">
           <div>
             <p className="text-xs font-bold uppercase tracking-wider text-black mb-1">
               01 — Discover
@@ -163,9 +163,9 @@ export default function StoryScrollDemo() {
         style={{ backgroundColor: '#1A3DE8', color: '#fff' }}
       >
         <p className="text-xs font-bold uppercase tracking-[0.2em]">04 — PHILOSOPHY</p>
-        <hr className="my-[2vw] border-none border-t border-white/50" />
+        <hr className="my-[1.5vw] border-none border-t border-white/50" />
         <div>
-          <h2 className="text-[clamp(2.5rem,8.5vw,9rem)] font-bold leading-[0.9] uppercase tracking-tight">
+          <h2 className="text-[clamp(2.2rem,6.8vw,7.5rem)] font-bold leading-[0.92] uppercase tracking-tight">
             BUILDING
             <br />
             THINGS THAT
@@ -173,8 +173,8 @@ export default function StoryScrollDemo() {
             MATTER.
           </h2>
         </div>
-        <hr className="my-[2vw] border-none border-t border-white/50" />
-        <p className="max-w-[50ch] text-[clamp(1rem,2vw,1.6rem)] font-normal leading-relaxed">
+        <hr className="my-[1.5vw] border-none border-t border-white/50" />
+        <p className="max-w-[50ch] text-[clamp(1rem,1.8vw,1.5rem)] font-normal leading-relaxed">
           We believe great software should do more than look impressive. It should solve real problems, simplify workflows, and help businesses move forward.
         </p>
       </FlowSection>
@@ -185,9 +185,9 @@ export default function StoryScrollDemo() {
         style={{ backgroundColor: '#000', color: '#fff' }}
       >
         <p className="text-xs font-bold uppercase tracking-[0.2em]">05 — LET&apos;S TALK</p>
-        <hr className="my-[2vw] border-none border-t border-white/60" />
+        <hr className="my-[1.5vw] border-none border-t border-white/60" />
         <div>
-          <h2 className="text-[clamp(2.5rem,8.5vw,9rem)] font-bold leading-[0.9] uppercase tracking-tight">
+          <h2 className="text-[clamp(2.2rem,6.8vw,7.5rem)] font-bold leading-[0.92] uppercase tracking-tight">
             HAVE AN
             <br />
             IDEA?
@@ -195,8 +195,8 @@ export default function StoryScrollDemo() {
             LET&apos;S BUILD.
           </h2>
         </div>
-        <hr className="my-[2vw] border-none border-t border-white/60" />
-        <p className="mt-auto max-w-[50ch] text-[clamp(1rem,2vw,1.6rem)] font-normal leading-relaxed mb-6">
+        <hr className="my-[1.5vw] border-none border-t border-white/60" />
+        <p className="mt-auto max-w-[50ch] text-[clamp(1rem,1.8vw,1.5rem)] font-normal leading-relaxed mb-6">
           Have a product idea, a business challenge, or a digital experience in mind? Get in touch with DevCore and let&apos;s discuss how we can bring it to life.
         </p>
         <a

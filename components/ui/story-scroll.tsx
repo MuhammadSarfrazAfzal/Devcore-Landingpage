@@ -30,21 +30,24 @@ export const FlowSection: React.FC<FlowSectionProps> = ({
     id={id}
     data-flow-section
     aria-label={ariaLabel}
-    className={cx('relative min-h-screen w-full overflow-hidden', className)}
+    className={cx(
+      'relative w-full min-h-[175vh] sm:min-h-[190vh] md:min-h-[205vh] last:min-h-screen',
+      className
+    )}
   >
     <div
       data-flow-inner
       className={cx(
-        'flow-art-container relative flex min-h-screen w-full flex-col justify-between',
-        'will-change-transform',
+        'flow-art-container relative flex h-screen w-full flex-col justify-between overflow-hidden',
+        'will-change-transform shadow-[0_-25px_60px_-10px_rgba(0,0,0,0.65)]',
       )}
       style={{
         transformOrigin: 'bottom left',
-        paddingLeft: 'clamp(1.25rem, 8vw, 12rem)',
-        paddingRight: 'clamp(1.25rem, 8vw, 12rem)',
-        paddingTop: 'clamp(2.5rem, 8vw, 8rem)',
-        paddingBottom: 'clamp(2.5rem, 6vw, 7rem)',
-        rowGap: 'clamp(1.5rem, 3vw, 3rem)',
+        paddingLeft: 'clamp(1.25rem, 6vw, 9rem)',
+        paddingRight: 'clamp(1.25rem, 6vw, 9rem)',
+        paddingTop: 'clamp(2rem, 5vh, 5.5rem)',
+        paddingBottom: 'clamp(2rem, 5vh, 5.5rem)',
+        rowGap: 'clamp(1rem, 2.5vh, 2.5rem)',
         ...style,
       }}
     >
@@ -87,7 +90,6 @@ const FlowArt: React.FC<FlowArtProps> = ({
       if (sections.length === 0) return;
 
       const triggers: ScrollTrigger[] = [];
-
       const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
       sections.forEach((section, i) => {
@@ -96,63 +98,87 @@ const FlowArt: React.FC<FlowArtProps> = ({
         const inner = section.querySelector<HTMLElement>('.flow-art-container');
         if (!inner) return;
 
-        if (i === 0 && isMobile) {
-          gsap.set(inner, { y: 60, opacity: 0 });
-          const tween = gsap.to(inner, {
-            y: 0,
-            opacity: 1,
-            ease: 'power2.out',
-            scrollTrigger: {
+        const nextSection = sections[i + 1];
+
+        // 1. PINNING: Pin each section to stay stationary on screen during its dwell + transition
+        if (i < sections.length - 1) {
+          triggers.push(
+            ScrollTrigger.create({
               trigger: section,
-              start: 'top 95%',
-              end: 'top 35%',
-              scrub: 0.6,
-            },
-          });
-          if (tween.scrollTrigger) triggers.push(tween.scrollTrigger);
+              start: 'top top',
+              end: () => `+=${section.offsetHeight}`,
+              pin: true,
+              pinSpacing: false,
+              invalidateOnRefresh: true,
+            }),
+          );
         }
 
+        // 2. ENTRY ANIMATION: Smooth stacked card entrance with gentle rotation and inertia damping
         if (i > 0) {
           if (isMobile) {
-            gsap.set(inner, { y: 50, opacity: 0.85 });
+            // Mobile: smooth vertical slide with subtle scale & opacity ramp
+            gsap.set(inner, {
+              yPercent: 40,
+              scale: 0.95,
+              opacity: 0.75,
+            });
+
             const tween = gsap.to(inner, {
-              y: 0,
+              yPercent: 0,
+              scale: 1,
               opacity: 1,
               ease: 'power1.out',
               scrollTrigger: {
                 trigger: section,
                 start: 'top bottom',
-                end: 'top 20%',
-                scrub: 0.3,
+                end: 'top top',
+                scrub: 0.8,
+                invalidateOnRefresh: true,
               },
             });
             if (tween.scrollTrigger) triggers.push(tween.scrollTrigger);
           } else {
-            gsap.set(inner, { rotation: 30, transformOrigin: 'bottom left' });
+            // Desktop: elegant editorial rotation (14deg) + scale + smooth glide
+            gsap.set(inner, {
+              rotation: 14,
+              scale: 0.94,
+              yPercent: 30,
+              transformOrigin: 'bottom left',
+            });
+
             const tween = gsap.to(inner, {
               rotation: 0,
-              ease: 'none',
+              scale: 1,
+              yPercent: 0,
+              ease: 'power1.out',
               scrollTrigger: {
                 trigger: section,
                 start: 'top bottom',
-                end: 'top 25%',
-                scrub: true,
+                end: 'top top',
+                scrub: 1.2,
+                invalidateOnRefresh: true,
               },
             });
             if (tween.scrollTrigger) triggers.push(tween.scrollTrigger);
           }
         }
 
-        if (i < sections.length - 1) {
-          triggers.push(
-            ScrollTrigger.create({
-              trigger: section,
-              start: isMobile ? 'top top' : 'bottom bottom',
-              end: 'bottom top',
-              pin: true,
-              pinSpacing: false,
-            }),
-          );
+        // 3. EXIT ANIMATION: When next section glides in over this one, subtly dim and scale this one back
+        if (nextSection) {
+          const exitTween = gsap.to(inner, {
+            scale: 0.96,
+            opacity: 0.45,
+            ease: 'power1.out',
+            scrollTrigger: {
+              trigger: nextSection,
+              start: 'top bottom',
+              end: 'top top',
+              scrub: isMobile ? 0.8 : 1.2,
+              invalidateOnRefresh: true,
+            },
+          });
+          if (exitTween.scrollTrigger) triggers.push(exitTween.scrollTrigger);
         }
       });
 
